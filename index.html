@@ -27,8 +27,10 @@
 
     <body>
         <div id="d">
-            <div id="info">銀河の車窓から</div>
-
+            <div id="info">
+              <p>銀河の車窓から</p>
+              <input type="button" onClick="moveCamera();" value="月" />
+            </div>
             <div id="universe"></div>
         </div>
 
@@ -116,6 +118,14 @@
             universe.play(date, 500, undefined);
 
             document.getElementById("universe").getElementsByTagName("canvas")[0].style.position="";
+            console.log(universe.getCore().getCameraPosition());
+            console.log(CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch));
+            moonPosition = CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch);
+
+            function moveCamera(){
+                console.log("moveCamera");
+                universe.getCore().moveCameraTo(moonPosition);
+            }
         </script>
 
     </body>

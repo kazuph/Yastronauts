@@ -1924,6 +1924,9 @@ UNIVERSE.Universe = function (time, refreshRate, container) {
     }
 
     // PROTECTED METHODS (API METHODS)
+    this.getCore = function () {
+        return core;
+    };
 
     /**
         Start playback for the universe
