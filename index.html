@@ -1,125 +1,31 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <title>basic universe.js example</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <style>
-            body {
-                background:#000;
-                color:#fff;
-                padding:0;
-                margin:0;
-                overflow:hidden;
-                font-family:georgia;
-                text-align:center;
-            }
-            h1 { }
-            a { color:skyblue }
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <title>銀河の車窓から</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+  <input type="button" onClick="universe.core.setDestination('earth');" value="earth" />
+  <input type="button" onClick="universe.core.setDestination('mercury');" value="mercury" />
+  <input type="button" onClick="universe.core.setDestination('venus');" value="venus" />
+  <input type="button" onClick="universe.core.setDestination('realearth');" value="realearth" />
+  <input type="button" onClick="universe.core.setDestination('mars');" value="mars" />
+  <input type="button" onClick="universe.core.setDestination('jupiter');" value="jupiter" />
+  <input type="button" onClick="universe.core.setDestination('saturn');" value="saturn" />
+  <input type="button" onClick="universe.core.setDestination('uranus');" value="uranus" />
+  <input type="button" onClick="universe.core.setDestination('neptune');" value="neptune" />
+  <input type="button" onClick="universe.core.setDestination('pluto');" value="pluto" />
+  <input type="button" onClick="go();" value="出発!" />
+  <div id="universe"></div>
+  <script src="js/three.min.js"></script>
+  <script src="js/universe.js"></script>
+  <script src="js/earth-extensions.js"></script>
+  <script src="js/app.js"></script>
 
-            #d { text-align:center; margin:1em 0 -2.5em 0; z-index:0; position:relative; display:block }
-            #universe {
-        height: 0px;
-        width: 0px;
-      }
-        </style>
-    </head>
-
-    <body>
-        <div id="d">
-            <div id="info">銀河の車窓から</div>
-
-            <div id="universe"></div>
-        </div>
-
-        <!-- base library -->
-        <script src="js/universe.js"></script>
-        <!-- earth moon extension -->
-        <script src="js/earth-extensions.js"></script>
-
-        <script>
-            //                                               ↓ fps
-            var universe = new UNIVERSE.Universe(new Date(), 30, document.getElementById("universe"));
-
-            var earthExtensions = new UNIVERSE.EarthExtensions(universe, false);
-
-            // 地球は一旦これでOK
-            earthExtensions.addEarth("img/world3000.jpg", "img/earth_lights_lrg-dim.png")
-
-            // earthなのに月の情報を持っている…
-            earthExtensions.addMoon("img/moon_1024.jpg")
-
-            // 光点？
-            earthExtensions.addSun();
-
-            var initialPosition = new UNIVERSE.ECICoordinates(
-                -14213.99162,
-                -39987.86471,
-                -1115.314875,
-                2.865601523,
-                -1.007157587,
-                -0.410247122
-            );
-
-            var date = new Date();
-            var epoch = new Date(date);
-
-            // モデリングしたオブジェクトの追加
-            // universe.addJsonGeometryModel("dsp", "models/DSP.json", function() {
-            //     var spaceObject = new UNIVERSE.SpaceObject(
-            //         "space_object_id",
-            //         "space_object_name",
-            //         "dsp",
-            //         function(time, updateState) {
-            //             time = new Date(universe.getCurrentUniverseTime());
-            //             var elapsedTime = time - epoch;
-            //             dt = 100;
-            //             var location = OrbitPropagator.propagateOrbit(initialPosition, elapsedTime/1000, dt, epoch);
-            //             //console.log(JSON.stringify(location));
-            //             return location;
-            //         },
-            //         true,
-            //         true,
-            //         [],
-            //         initialPosition,
-            //         universe,
-            //         earthExtensions
-            //     );
-            //     spaceObject.showVehicle = true;
-
-            //     earthExtensions.addSpaceObject(spaceObject, function() {earthExtensions.showAllOrbitLines(true)});
-
-            // });
-
-
-            // 地球の平面に出すオブジェクト 1
-            var groundObject = new UNIVERSE.GroundObject("blue_dot", "blue_dot", null, function() {
-                return CoordinateConversionTools.convertLLAtoECI(
-                    new UNIVERSE.LLACoordinates(40, -104, 1),
-                    CoordinateConversionTools.convertTimeToGMST(universe.getCurrentUniverseTime())
-                );
-            })
-            earthExtensions.addGroundDot(groundObject, 0x0000FF, 500, function () {});
-
-            // 地球の平面に出すオブジェクト 2
-            var groundObject2 = new UNIVERSE.GroundObject("green_dot", "green_dot", null, function() {
-                return CoordinateConversionTools.convertLLAtoECI(
-                    new UNIVERSE.LLACoordinates(50, -95, 1),
-                    CoordinateConversionTools.convertTimeToGMST(universe.getCurrentUniverseTime())
-                );
-            })
-            earthExtensions.addGroundDot(groundObject2, 0x00FF00, 300, function () {});
-
-            // 地球を中心とする空中の物体
-            earthExtensions.addStaticGroundDot("static_object", "name", 0xFF0FF0, 400, 45, 15, 1000, function () {});
-
-            universe.play(date, 500, undefined);
-
-            document.getElementById("universe").getElementsByTagName("canvas")[0].style.position="";
-
-            console.log(UNIVERSE.Core3D.getCameraPosition());
-
-        </script>
-
-    </body>
+  <!-- for leap motion -->
+  <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="js/leap.js"></script>
+</body>
 </html>
