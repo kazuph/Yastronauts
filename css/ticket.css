@@ -1,0 +1,9 @@
+#ticket{
+	width:400px;
+	position: fixed;
+	right:-410px;
+}
+
+#ticket img{
+	width:100%;
+	}
