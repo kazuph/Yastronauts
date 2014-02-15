@@ -1,5 +1,7 @@
 var animation_flg = false;
 var hide_flg = false;
+var menu_count = 0;
+var menu_th = 10;
 
 var myLeapBaseX = 0;
 var myLeapBaseY = 0;
@@ -136,6 +138,8 @@ Leap.loop(controllerOptions, function(frame){
       prevZ = z;
       console.log(nextDist);
     }
+    menu_count -= 1;
+    if (menu_count < 0) menu_count = 0;
     break;
   case 2:
     var x = frame.fingers[0].tipPosition[0];
@@ -149,16 +153,22 @@ Leap.loop(controllerOptions, function(frame){
       universe.addRotationToCamera((x - myLeapBaseX) * 0.005 * zoomDamp, (y - myLeapBaseY) * 0.003 * zoomDamp);
     }
     //console.log("(" + x + "," + y + ")");
+    menu_count -= 1;
+    if (menu_count < 0) menu_count = 0;
     break;
   case 1:
     if (!animation_flg) {
       var y = frame.fingers[0].tipPosition[1];
       if (baseY == 0) {
-        hide_flg = false;
-        toRed();
-        baseY = y;
-        prev_selected = base_selected;
-        setMenuOpacity(1);
+        if ( menu_count > menu_th ) {
+          hide_flg = false;
+          toRed();
+          baseY = y;
+          prev_selected = base_selected;
+          setMenuOpacity(1);
+        } else {
+          menu_count += 1;
+        }
       } else {
         var select_dist = Math.round((baseY - y) / th);
         selected = base_selected + select_dist;
@@ -177,6 +187,7 @@ Leap.loop(controllerOptions, function(frame){
     myLeapBaseY = 0;
     prevZ = 0;
     count = 0;
+    menu_count = 0;
     if ( baseY != 0 ) {
       setMenuOpacity(0.5);
       baseSelectChange();
