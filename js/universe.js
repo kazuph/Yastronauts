@@ -563,27 +563,32 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-        if (goStar) {
-            // var d = distanceXYZ(camera.position, scene.position);
-            // // TODO: 各星の半径 + α
-            // if (d < 10000) {
-            //     target.position = camera.position;
-            //     rotation.position = camera.position;
-            //     goStar = 0;
-            // }
 
+        if (goStar) {
             // 近づいていく処理
             if (window.universe) {
                 scene.position = universe.core.getObjectPosition(self.destination);
             }
-            camera.position.x += (scene.position.x - camera.position.x) * 0.001;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.001;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.001;
+            camera.position.x += (scene.position.x - camera.position.x) * 0.01;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.01;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.01;
+            var d = distanceXYZ(camera.position, scene.position);
+            // TODO: 各星の半径 + α
+            if (d < 10000) {
+                goStar = 0;
+            }
         } else {
             // 原点(0, 0, 0) からの回転を見てしまっている？
-            camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
-            camera.position.y = distance * Math.sin(rotation.y);
-            camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+            if (window.universe) {
+                
+                var p = universe.core.getObjectPosition(self.destination);
+                console.log(p);
+                // 星の座標を加算するとカメラが近くまで移動するので、選択時に使えるかも
+                scene.position = p;
+                camera.position.x = p.x + distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+                camera.position.y = p.y + distance * Math.sin(rotation.y);
+                camera.position.z = p.z + distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+            }
         }
 
         camera.lookAt(scene.position);
