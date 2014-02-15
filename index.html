@@ -23,6 +23,8 @@
         width: 0px;
       }
         </style>
+        <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     </head>
 
     <body>
@@ -117,6 +119,28 @@
 
             document.getElementById("universe").getElementsByTagName("canvas")[0].style.position="";
         </script>
-
+        <script>
+var myLeapBaseX = 0;
+var myLeapBaseY = 0;
+Leap.loop(function(frame){
+  if (frame.fingers[0]) {
+    var x = frame.fingers[0].tipPosition[0];
+    var y = frame.fingers[0].tipPosition[1];
+    var z = frame.fingers[0].tipPosition[2];
+    if (myLeapBaseX == 0 && myLeapBaseY == 0) {
+      myLeapBaseX = x;
+      myLeapBaseY = y;
+    } else {
+      var dist = universe.getCurrentZoomDistance();
+      var zoomDamp = dist / (35000);
+      universe.addRotationToCamera((x - myLeapBaseX) * 0.005 * zoomDamp, (y - myLeapBaseY) * 0.005 * zoomDamp);
+    }
+    console.log("(" + x + "," + y + ")");
+  } else {
+    myLeapBaseX = 0;
+    myLeapBaseY = 0;
+  }
+});
+       </script>
     </body>
 </html>
