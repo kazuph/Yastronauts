@@ -2,21 +2,26 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="css/menu.css">
   <title>銀河の車窓から</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-  <input type="button" onClick="universe.core.setDestination('earth');" value="sun" />
-  <input type="button" onClick="universe.core.setDestination('mercury');" value="mercury" />
-  <input type="button" onClick="universe.core.setDestination('venus');" value="venus" />
-  <input type="button" onClick="universe.core.setDestination('realearth');" value="realearth" />
-  <input type="button" onClick="universe.core.setDestination('mars');" value="mars" />
-  <input type="button" onClick="universe.core.setDestination('jupiter');" value="jupiter" />
-  <input type="button" onClick="universe.core.setDestination('saturn');" value="saturn" />
-  <input type="button" onClick="universe.core.setDestination('uranus');" value="uranus" />
-  <input type="button" onClick="universe.core.setDestination('neptune');" value="neptune" />
-  <input type="button" onClick="universe.core.setDestination('pluto');" value="pluto" />
+  <input type="button" onClick="prevStar();" value="prev" />
+  <input type="button" onClick="nextStar();" value="next" />
   <input type="button" onClick="go();" value="出発!" />
+
+  <div class="select_stars" id="selector_wrapper">
+    <div id="select_0" class="selector">sun</div><!--<br/>-->
+    <div id="select_1" class="selector">mercury</div><!--<br/>-->
+    <div id="select_2" class="selector">venus</div><!--<br/>-->
+    <div id="select_3" class="selector">earth</div><!--<br/>-->
+    <div id="select_4" class="selector">moon</div><!--<br/>-->
+    <div id="select_5" class="selector">marse</div><!--<br/>-->
+    <div id="select_6" class="selector">jupiter</div><!--<br/>-->
+    <div id="select_7" class="selector">saturn</div><!--<br/>-->
+  </div>
+
   <div id="universe"></div>
   <script src="js/three.min.js"></script>
   <script src="js/universe.js"></script>
@@ -26,6 +31,6 @@
   <!-- for leap motion -->
   <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="js/leap.js"></script>
+  <script src="js/new_leap.js"></script>
 </body>
 </html>

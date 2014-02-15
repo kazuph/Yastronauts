@@ -479,10 +479,6 @@ UNIVERSE.Core3D = function (container) {
     this.maxZoom = 500000;
     this.minZoom = 7000;
 
-    self.getDestination = function() {
-        return universe.core.getObjectPosition(name);
-    };
-
     self.setDestination = function(name) {
         self.destination = name || self.destination;
 
@@ -881,18 +877,6 @@ UNIVERSE.Core3D = function (container) {
         goStar = 1 - goStar;
         console.log(goStar);
     };
-
-    this.moveCameraByPosition = function (p) {
-        if (window.universe) {
-            console.log("moveCameraByPosition");
-            console.log(p);
-            scene.position = p;
-            camera.position.x = p.x;
-            camera.position.y = p.y;
-            camera.position.z = p.z;
-            distance = 7000;
-        }
-    }
 
     this.moveCameraTo = function (position_vector) {
         console.log("moveCamera in universe");
