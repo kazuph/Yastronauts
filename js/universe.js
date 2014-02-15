@@ -1148,6 +1148,7 @@ UNIVERSE.Core3D = function (container) {
         light,
         overRenderer,
         curZoomSpeed = 0, // Constants for zooming, rotation, etc.
+        goStar = 0,
         mouse = {
             x : 0,
             y : 0
@@ -1262,16 +1263,27 @@ UNIVERSE.Core3D = function (container) {
         zoom(curZoomSpeed);
 
         //console.log("target: " + JSON.stringify(target));
-        console.log(self.distanceTarget);
         rotation.x += (target.x - rotation.x) * 0.1;
         rotation.y += (target.y - rotation.y) * 0.1;
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-        camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+        if (goStar) {
+            d = distanceXYZ(camera.position, scene.position);
+            console.log(d);
+            // TODO: 各星の半径 + α
+            if (d < 10000) {
+                goStar = 0;
+            }
+            camera.position.x += (scene.position.x - camera.position.x) * 0.01;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.01;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.01;
+        } else {
+            camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+            camera.position.y = distance * Math.sin(rotation.y);
+            camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+        }
 
-        camera.position.y = distance * Math.sin(rotation.y);
-        camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
         camera.lookAt(scene.position);
 
         vector.copy(camera.position);
@@ -1533,12 +1545,24 @@ UNIVERSE.Core3D = function (container) {
 		}
 	}
 
+    function distanceXYZ(posi1, posi2) {
+        x = posi1.x - posi2.x;
+        y = posi1.y - posi2.y;
+        z = posi1.z - posi2.z;
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+    }
+
+    this.toggleGoStar = function () {
+        goStar = 1 - goStar;
+        console.log(goStar);
+    };
+
     this.lookAtStar = function (position_vector) {
         // console.log("moveCamera in universe");
         // console.log(position_vector);
         // camera.position = position_vector;
-        target.position = position_vector;
-        rotation = position_vector;
+        // target.position = position_vector;
+        // rotation = position_vector;
         // distance = 50000;
         scene.position = position_vector;
     };

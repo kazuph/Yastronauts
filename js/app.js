@@ -80,3 +80,6 @@ function moveCamera(id){
     console.log("moveCamera");
     universe.getCore().lookAtStar(universe.getCore().getObjectPosition(id));
 }
+function go(){
+    universe.getCore().toggleGoStar();
+}
