@@ -427,6 +427,7 @@ UNIVERSE.Core3D = function (container) {
     var self = this,
         camera, // Variables used to draw the 3D elements
         scene,
+        sceneTarget,
         projector,
         renderer,
         w,
@@ -472,15 +473,24 @@ UNIVERSE.Core3D = function (container) {
 	      //GAMEPAD_PAN_SCALING_FACTOR = 5000;
 	      intersectionListeners = [];
 
-    self.distanceTarget = 50000;
+    self.distanceTarget = 7000;
     self.destination = 'earth';
 
     this.maxZoom = 500000;
     this.minZoom = 7000;
 
+    self.getDestination = function() {
+        return universe.core.getObjectPosition(name);
+    };
+
     self.setDestination = function(name) {
-        self.destination = name;
-        scene.position = universe.core.getObjectPosition(name);
+        self.destination = name || self.destination;
+
+        var object = universe.core.getObject(name);
+
+        sceneTarget = {};
+        sceneTarget.position = object.shape.position;
+        sceneTarget.radius = object.shape.geometry.radius;
     };
 
     function setupRenderer() {
@@ -563,27 +573,32 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-        if (goStar) {
-            var d = distanceXYZ(camera.position, scene.position);
+        // XXX: 目的地をピタリと固定する
+        // if (window.universe) {
+        //     universe.core.setDestination(universe.core.destination);
+        // }
 
-            // TODO: 各星の半径 + α
-            if (d < 10000) {
-                target.position = camera.position;
-                rotation.position = camera.position;
-                goStar = 0;
+        if (goStar) {
+            if (sceneTarget) {
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
             }
-            // 近づいていく処理
-            if (window.universe) {
-                scene.position = universe.core.getObjectPosition(self.destination);
-            }
-            camera.position.x += (scene.position.x - camera.position.x) * 0.001;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.001;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.001;
+
+            camera.position.x += (scene.position.x - camera.position.x) * 0.005;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.005;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.005;
+
         } else {
-            // 原点(0, 0, 0) からの回転を見てしまっている？
-            camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
-            camera.position.y = distance * Math.sin(rotation.y);
-            camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+            if (sceneTarget) {
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.05;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.05;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.05;
+
+                camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
+                camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
+                camera.position.z += (scene.position.z + sceneTarget.radius * 3 - camera.position.z) * 0.1;
+            }
         }
 
         camera.lookAt(scene.position);
@@ -834,6 +849,14 @@ UNIVERSE.Core3D = function (container) {
         return ret;
     };
 
+    this.getObject = function (id) {
+        var ret;
+        if (drawnObjects[id] !== undefined && drawnObjects[id].shape !== undefined) {
+	          ret = drawnObjects[id];
+        }
+        return ret;
+    };
+
     this.getObjects = function () {
         return drawnObjects;
     };
@@ -859,14 +882,17 @@ UNIVERSE.Core3D = function (container) {
         console.log(goStar);
     };
 
-    this.lookAtStar = function (position_vector) {
-        // console.log("moveCamera in universe");
-        // console.log(position_vector);
-        // camera.position = position_vector;
-        // target.position = position_vector;
-        // rotation = position_vector;
-        // distance = 50000;
-    };
+    this.moveCameraByPosition = function (p) {
+        if (window.universe) {
+            console.log("moveCameraByPosition");
+            console.log(p);
+            scene.position = p;
+            camera.position.x = p.x;
+            camera.position.y = p.y;
+            camera.position.z = p.z;
+            distance = 7000;
+        }
+    }
 
     this.moveCameraTo = function (position_vector) {
         console.log("moveCamera in universe");
