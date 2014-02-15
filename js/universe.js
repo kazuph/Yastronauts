@@ -564,17 +564,18 @@ UNIVERSE.Core3D = function (container) {
     function render() {
         zoom(curZoomSpeed);
 
-        rotation.x += (target.x - rotation.x) * 0.1;
-        rotation.y += (target.y - rotation.y) * 0.1;
+        // XXX: デモの動きの中では必要ない
+        // rotation.x += (target.x - rotation.x) * 0.1;
+        // rotation.y += (target.y - rotation.y) * 0.1;
         // rotation.z += (target.z - rotation.z) * 0.1;
-        distance += (self.distanceTarget - distance) * 0.3;
-
-        // XXX: 目的地をピタリと固定する
-        // if (window.universe) {
-        //     universe.core.setDestination(universe.core.destination);
-        // }
+        // distance += (self.distanceTarget - distance) * 0.3;
 
         if (goStar) {
+            // XXX: 目的地をピタリと固定する
+            if (window.universe) {
+                universe.core.setDestination(universe.core.destination);
+            }
+
             if (sceneTarget) {
                 scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
                 scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
@@ -584,6 +585,17 @@ UNIVERSE.Core3D = function (container) {
             camera.position.x += (scene.position.x - camera.position.x) * 0.005;
             camera.position.y += (scene.position.y - camera.position.y) * 0.005;
             camera.position.z += (scene.position.z - camera.position.z) * 0.005;
+
+            var dist = Math.sqrt(
+                Math.pow(scene.position.x - camera.position.x, 2) +
+                Math.pow(scene.position.y - camera.position.y, 2) +
+                Math.pow(scene.position.z - camera.position.z, 2)
+            );
+
+            if (!window.arrived && dist < sceneTarget.radius) {
+                window.arrived = true;
+                location.href = 'http://nara-koko.com/ginga_test/arrival.html';
+            }
 
         } else {
             if (sceneTarget) {
