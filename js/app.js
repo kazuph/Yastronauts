@@ -115,6 +115,14 @@ document.getElementById("universe").getElementsByTagName("canvas")[0].style.posi
 
 universe.core.setDestination('realearth');
 
+// 初期の位置を保存
+var initPosition = universe.core.getDestination('realearth');
+console.log("init position");
+console.log(initialPosition);
+
 function go() {
+    // 初期の位置に戻る
+    universe.core.moveCameraByPosition(initialPosition);
     universe.core.toggleGoStar();
 }
+

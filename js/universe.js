@@ -878,6 +878,18 @@ UNIVERSE.Core3D = function (container) {
         console.log(goStar);
     };
 
+    this.moveCameraByPosition = function (p) {
+        if (window.universe) {
+            console.log("moveCameraByPosition");
+            console.log(p);
+            scene.position = p;
+            camera.position.x = p.x;
+            camera.position.y = p.y;
+            camera.position.z = p.z;
+            distance = 7000;
+        }
+    }
+
     this.moveCameraTo = function (position_vector) {
         console.log("moveCamera in universe");
 
