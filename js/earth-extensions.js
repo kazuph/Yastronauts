@@ -529,7 +529,7 @@ UNIVERSE.Planet = function (universe, earthExtensions, planetImageURL, options) 
                 earthExtensions.setSunLighting(earthExtensions.useSunLighting);
             }
         );
-    planetObject.radius = options.radius;
+    // planetObject.radius = options.radius;
     return planetObject;
 };
 
