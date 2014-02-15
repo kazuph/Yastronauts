@@ -558,7 +558,7 @@ UNIVERSE.Core3D = function (container) {
         // パーティクル
         setTimeout(function(){
             var geometry = new THREE.Geometry();
-            var numParticles = 20000;
+            var numParticles = 12000;
             for(var i = 0 ; i < numParticles ; i++) {
                 console.log("particle");
                 // 冥王星の位置 {x: -1375849.9780403278,  y: 1126170.471690741,  z: 3260436.9624934252}
@@ -575,7 +575,7 @@ UNIVERSE.Core3D = function (container) {
             mesh.position = new THREE.Vector3(0, 0, 0);
             mesh.sortParticles = false;
             scene.add(mesh);
-        },  3000);
+        },  5000);
 
         animate();
     }
