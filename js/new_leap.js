@@ -12,18 +12,34 @@ var swipe_right_cnt = 0;
 var swipe_forward_cnt = 0;
 var circle_cnt = 0;
 
+var tickets = new Array(
+$('#ticket0'),
+$('#ticket1'),
+$('#ticket2'),
+$('#ticket3'),
+$('#ticket4'),
+$('#ticket5'),
+$('#ticket6'),
+$('#ticket7'),
+$('#ticket8'),
+$('#ticket9')
+);
+
 function reset_state() {
   swipe_left_cnt = 0;
   swipe_right_cnt = 0;
   swipe_forward_cnt = 0;
   circle_cnt = 0;
 }
+
 function ticket() {
   if (!disable) {
     announce();
-    var right = Math.floor(($(window).width() - $("#ticket").width()) / 2);  
+    var right = Math.floor(($(window).width() - tickets[selectedStarNum].width()) / 2);  
     var leftover = Math.floor(right * 2 + 410);  
-    $('#ticket').animate({
+    //$('#ticket').src = tickets[selectedStarNum];
+    //$('#ticket').animate({
+    tickets[selectedStarNum].animate({
         right: right},300)
       .delay(10000).animate({
         right: leftover},300, null, function(){
@@ -42,7 +58,9 @@ function swipe_forward_fnc() {
   reset_state();
   flg = true;
   console.log("swipe_forward");
-  ticket();
+  if (selectedStarNum != 3) { // other than earth
+    ticket();
+  }
 }
 
 function swipe_right_fnc() {
