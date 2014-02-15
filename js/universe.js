@@ -570,31 +570,37 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         // distance += (self.distanceTarget - distance) * 0.3;
 
-        if (goStar) {
-            // XXX: 目的地をピタリと固定する
-            if (window.universe) {
-                universe.core.setDestination(universe.core.destination);
-            }
+        // XXX: 目的地をピタリと固定する
+        if (window.universe) {
+            universe.core.setDestination(universe.core.destination);
+        }
 
+        if (goStar) {
             if (sceneTarget) {
                 scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
                 scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
                 scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
             }
 
-            camera.position.x += (scene.position.x - camera.position.x) * 0.005;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.005;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.005;
-
             var dist = Math.sqrt(
                 Math.pow(scene.position.x - camera.position.x, 2) +
                 Math.pow(scene.position.y - camera.position.y, 2) +
                 Math.pow(scene.position.z - camera.position.z, 2)
             );
-
             if (!window.arrived && dist < sceneTarget.radius) {
                 window.arrived = true;
                 location.href = 'http://nara-koko.com/ginga_test/arrival.html';
+            }
+
+            if (dist > 1000000) {
+                var ratio = 0.005 / Math.pow(dist / 1000000, 2);
+                camera.position.x += (scene.position.x - camera.position.x) * ratio;
+                camera.position.y += (scene.position.y - camera.position.y) * ratio;
+                camera.position.z += (scene.position.z - camera.position.z) * ratio;
+            } else {
+                camera.position.x += (scene.position.x - camera.position.x) * 0.005;
+                camera.position.y += (scene.position.y - camera.position.y) * 0.005;
+                camera.position.z += (scene.position.z - camera.position.z) * 0.005;
             }
 
         } else {
@@ -614,7 +620,7 @@ UNIVERSE.Core3D = function (container) {
                     Math.pow(scene.position.z + sceneTarget.radius * 3 - camera.position.z, 2)
                 );
 
-                if (dist < 100) {
+                if (dist < 500) {
                     if (!window.picopicon) {
                         window.picopicon = true;
                         $(document).triggerHandler('select:done');
