@@ -503,7 +503,7 @@ UNIVERSE.Planet = function (universe, earthExtensions, planetImageURL, options) 
             undefined,
             function (elapsedTime) {
                 var time = new Date(universe.getCurrentUniverseTime()),
-                    propagatedValue = CoordinateConversionTools.getPlanetPositionECIAtCurrentTime(time, options.distance),
+                    propagatedValue = CoordinateConversionTools.getPlanetPositionECIAtCurrentTime(time, options),
                     convertedLocation = Utilities.eciTo3DCoordinates({
                         x: propagatedValue.x,
                         y: propagatedValue.y,
@@ -2761,7 +2761,7 @@ var CoordinateConversionTools = {
         return moonPosition;
     },
 
-    getPlanetPositionECIAtCurrentTime: function (currentEpoch, distance) {
+    getPlanetPositionECIAtCurrentTime: function (currentEpoch, options) {
         var Ttdb = CoordinateConversionTools.convertCurrentEpochToBarycentricTime(currentEpoch),
             lambda = 218.32 + 481267.8813 * Ttdb,
             phi,
@@ -2776,6 +2776,7 @@ var CoordinateConversionTools = {
         lambda += 0.21 * Math.sin(MathTools.toRadians(269.9 + 954397.70 * Ttdb));
         lambda += -0.19 * Math.sin(MathTools.toRadians(357.5 + 35999.05 * Ttdb));
         lambda += -0.11 * Math.sin(MathTools.toRadians(186.6 + 966404.05 * Ttdb));  //degrees
+        options.speed && (lambda *= options.speed);
         if (Math.abs(lambda) > 360) {
             lambda = (lambda % 360);
         }
@@ -2808,7 +2809,7 @@ var CoordinateConversionTools = {
 
         e = 23.439291 - 0.0130042 * Ttdb;//obliquity of the ecliptic
         rMoon = 1 / Math.sin(MathTools.toRadians(parallax));//earth radii
-        rMoon = rMoon * distance;//km
+        rMoon = rMoon * options.distance;//km
 
         e = MathTools.toRadians(e);
         phi = MathTools.toRadians(phi);

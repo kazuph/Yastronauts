@@ -564,14 +564,14 @@ UNIVERSE.Core3D = function (container) {
         distance += (self.distanceTarget - distance) * 0.3;
 
         if (goStar) {
-            var d = distanceXYZ(camera.position, scene.position);
+            // var d = distanceXYZ(camera.position, scene.position);
+            // // TODO: 各星の半径 + α
+            // if (d < 10000) {
+            //     target.position = camera.position;
+            //     rotation.position = camera.position;
+            //     goStar = 0;
+            // }
 
-            // TODO: 各星の半径 + α
-            if (d < 10000) {
-                target.position = camera.position;
-                rotation.position = camera.position;
-                goStar = 0;
-            }
             // 近づいていく処理
             if (window.universe) {
                 scene.position = universe.core.getObjectPosition(self.destination);
