@@ -582,7 +582,6 @@ UNIVERSE.Core3D = function (container) {
                 scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
             }
 
-            $("body").css("background-position", ((sceneTarget.position.x - scene.position.x) * 0.0005) + "px " + 0 + "px");
             camera.position.x += (scene.position.x - camera.position.x) * 0.005;
             camera.position.y += (scene.position.y - camera.position.y) * 0.005;
             camera.position.z += (scene.position.z - camera.position.z) * 0.005;
@@ -603,7 +602,7 @@ UNIVERSE.Core3D = function (container) {
                 scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.05;
                 scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.05;
                 scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.05;
-                $("body").css("background-position", ((sceneTarget.position.x - scene.position.x) * 0.001) + "px " + 0 + "px");
+                document.body.style.backgroundPositionX = ((sceneTarget.position.x - scene.position.x) * 0.001) + 'px';
 
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
                 camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
