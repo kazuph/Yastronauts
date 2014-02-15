@@ -115,9 +115,26 @@ document.getElementById("universe").getElementsByTagName("canvas")[0].style.posi
 
 universe.core.setDestination('realearth');
 
+starList = ['earth', 'mercury', 'venus', 'realearth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
+selectedStarNum = 3; // 初期値は地球
+
+// 出発
 function go() {
-    // 初期の位置に戻る
     universe.core.camera.position = universe.core.getObjectPosition('realearth');
     universe.core.toggleGoStar();
 }
 
+// 次の星
+function nextStar() {
+    selectedStarNum++;
+    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+}
+
+// 前の星
+function prevStar() {
+    selectedStarNum--;
+    if (selectedStarNum < 0) {
+        selectedStarNum = starList.length -1;
+    }
+    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+}

@@ -25,7 +25,9 @@ function ticket() {
     $('#ticket').animate({
         right: right},300)
       .delay(1000).animate({
-        right: leftover},300);
+        right: leftover},300, null, function(){
+            go();
+        });
     disable = true;
   }
 }
@@ -42,11 +44,13 @@ function swipe_forward_fnc() {
   ticket();
 }
 function swipe_right_fnc() {
+  prevStar();
   reset_state();
   flg = true;
   console.log("swipe_right");
 }
 function swipe_left_fnc() {
+  nextStar();
   reset_state();
   flg = true;
   console.log("swipe_left");
