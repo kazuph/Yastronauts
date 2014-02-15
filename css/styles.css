@@ -4,5 +4,5 @@
 }
 
 body {
-    background: url(../img/stars.jpg);
+    background: #000 url(../img/stars.jpg) fixed 0 0;
 }
