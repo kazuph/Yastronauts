@@ -556,23 +556,26 @@ UNIVERSE.Core3D = function (container) {
         // scene.add(ambientLight);
 
         // パーティクル
-        var geometry = new THREE.Geometry();
-        var numParticles = 20000;
-        for(var i = 0 ; i < numParticles ; i++) {
-            console.log("particle");
-            geometry.vertices.push(new THREE.Vector3(
-                        Math.random() * 4000000 - 2000000,
-                        Math.random() * 4000000 - 2000000,
-                        Math.random() * 4000000 - 2000000));
-        }
-        var material = new THREE.ParticleBasicMaterial({
-            size: 1000,
-            color: 0xFFFFFF
-        });
-        var mesh = new THREE.ParticleSystem(geometry, material);
-        mesh.position = new THREE.Vector3(0, 0, 0);
-        mesh.sortParticles = false;
-        scene.add(mesh);
+        setTimeout(function(){
+            var geometry = new THREE.Geometry();
+            var numParticles = 20000;
+            for(var i = 0 ; i < numParticles ; i++) {
+                console.log("particle");
+                // 冥王星の位置 {x: -1375849.9780403278,  y: 1126170.471690741,  z: 3260436.9624934252}
+                geometry.vertices.push(new THREE.Vector3(
+                            Math.random() * - 1375849,
+                            Math.random() * 1126170,
+                            Math.random() * 3260436));
+            }
+            var material = new THREE.ParticleBasicMaterial({
+                size: 1500,
+                color: 0xFFFFFF
+            });
+            var mesh = new THREE.ParticleSystem(geometry, material);
+            mesh.position = new THREE.Vector3(0, 0, 0);
+            mesh.sortParticles = false;
+            scene.add(mesh);
+        },  3000);
 
         animate();
     }
