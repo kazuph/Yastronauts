@@ -84,7 +84,7 @@ $DATA = array(
 	"mars" => "火星",
 	"venus" => "金星",
 	"realearth" => "地球",
-	"sun" => "太陽",
+	"earth" => "太陽",
 	"mercury" => "水星",
 	"pluto" => "冥王星",
 	"neptune" => "海王星",
@@ -95,7 +95,7 @@ $DATA = array(
 if (isset($_GET['star'])) {
 	echo $DATA[$_GET['star']];
 }
-?> </h1><p>ご乗車ありがとうございました</p><p><a href="/ginga_test">もういちど旅をする</a></p><div id="comment"><p>記念に一言</p><div class="fb-comments" data-href="http://galactic-railways.com" data-width="500px" data-numposts="5" data-colorscheme="dark"></div></div></div>
+?> </h1><p>ご乗車ありがとうございました</p><p><a href="./index.html">もういちど旅をする</a></p><div id="comment"><p>記念に一言</p><div class="fb-comments" data-href="http://galactic-railways.com" data-width="500px" data-numposts="5" data-colorscheme="dark"></div></div></div>
 <audio id="bgm" src="audio/921.mp3" autoplay loop></audio>
 <audio id="shushu" src="audio/arriving.mp3#t=5" autoplay ></audio>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
