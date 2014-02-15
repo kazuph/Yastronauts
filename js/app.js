@@ -182,6 +182,3 @@ var starList = [
     'neptune',
     'pluto'
 ];
-
-console.log(universe.core.getObjectPosition(starList[0]));
-console.log(universe.core.getObjectPosition(starList[9]));
