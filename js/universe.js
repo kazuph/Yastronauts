@@ -561,12 +561,12 @@ UNIVERSE.Core3D = function (container) {
         for(var i = 0 ; i < numParticles ; i++) {
             console.log("particle");
             geometry.vertices.push(new THREE.Vector3(
-                        Math.random() * 400000 - 200000,
-                        Math.random() * 400000 - 200000,
-                        Math.random() * 400000 - 200000));
+                        Math.random() * 4000000 - 2000000,
+                        Math.random() * 4000000 - 2000000,
+                        Math.random() * 4000000 - 2000000));
         }
         var material = new THREE.ParticleBasicMaterial({
-            size: 2000,
+            size: 1000,
             color: 0xFFFFFF
         });
         var mesh = new THREE.ParticleSystem(geometry, material);
