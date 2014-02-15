@@ -427,6 +427,7 @@ UNIVERSE.Core3D = function (container) {
     var self = this,
         camera, // Variables used to draw the 3D elements
         scene,
+        sceneTarget,
         projector,
         renderer,
         w,
@@ -480,7 +481,10 @@ UNIVERSE.Core3D = function (container) {
 
     self.setDestination = function(name) {
         self.destination = name;
-        scene.position = universe.core.getObjectPosition(name);
+
+        sceneTarget = {};
+        sceneTarget.position = universe.core.getObjectPosition(name);
+        // scene.position = universe.core.getObjectPosition(name);
     };
 
     function setupRenderer() {
@@ -563,23 +567,25 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
+        if (sceneTarget) {
+            scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
+            scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
+            scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
+        }
+
         if (goStar) {
             // 近づいていく処理
             if (window.universe) {
-                scene.position = universe.core.getObjectPosition(self.destination);
+                sceneTarget.position = universe.core.getObjectPosition(self.destination);
             }
-            camera.position.x += (scene.position.x - camera.position.x) * 0.01;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.01;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.01;
-            var d = distanceXYZ(camera.position, scene.position);
-            // TODO: 各星の半径 + α
-            if (d < 10000) {
-                goStar = 0;
-            }
+
+            camera.position.x += (scene.position.x - camera.position.x) * 0.005;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.005;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.005;
+
         } else {
             // 原点(0, 0, 0) からの回転を見てしまっている？
             if (window.universe) {
-                
                 var p = universe.core.getObjectPosition(self.destination);
                 // 星の座標を加算するとカメラが近くまで移動するので、選択時に使えるかも
                 scene.position = p;
