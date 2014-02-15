@@ -608,6 +608,21 @@ UNIVERSE.Core3D = function (container) {
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
                 camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
                 camera.position.z += (scene.position.z + sceneTarget.radius * 3 - camera.position.z) * 0.1;
+
+                var dist = Math.sqrt(
+                    Math.pow(scene.position.x + sceneTarget.radius * 3 - camera.position.x, 2) +
+                    Math.pow(scene.position.y + sceneTarget.radius * 3 - camera.position.y, 2) +
+                    Math.pow(scene.position.z + sceneTarget.radius * 3 - camera.position.z, 2)
+                );
+
+                if (dist < 100) {
+                    if (!window.picopicon) {
+                        window.picopicon = true;
+                        $(document).triggerHandler('select:done');
+                    }
+                } else {
+                    window.picopicon = false;
+                }
             }
         }
 

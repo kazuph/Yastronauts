@@ -6,3 +6,36 @@
 body {
     background: #000 url(../img/stars.jpg) fixed 0 0;
 }
+
+#planet_info {
+    border-bottom: 5px solid #3c3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 200px;
+    margin-left: 150px;
+    z-index: 1000;
+    display: none;
+
+    line-height: 320px;
+    vertical-align: bottom;
+    color: #3c3;
+    font-size: 48px;
+    font-family: helvetica;
+    text-indent: 20px;
+}
+
+#planet_info:before {
+    content: ' ';
+    border-bottom: 5px solid #3c3;
+    width: 150px;
+    height: 150px;
+    margin-left: -100px;
+    margin-top: 23px;
+    position: absolute;
+    -webkit-transform: rotate(30deg);
+}
+
+#planet_info .text {
+    padding-right: 20px;
+}

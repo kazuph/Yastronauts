@@ -111,30 +111,59 @@ universe.addJsonGeometryModel("dsp", "models/DSP.json?", function() {
 
 universe.play(date, 500, undefined);
 
-document.getElementById("universe").getElementsByTagName("canvas")[0].style.position = "";
+var starList = [
+    'earth',
+    'mercury',
+    'venus',
+    'realearth',
+    'mars',
+    'jupiter',
+    'saturn',
+    'uranus',
+    'neptune',
+    'pluto'
+];
 
-universe.core.setDestination('realearth');
+var selectedStarNum = 3; // 初期値は地球
+universe.core.setDestination(starList[selectedStarNum]);
 
-starList = ['earth', 'mercury', 'venus', 'realearth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
-selectedStarNum = 3; // 初期値は地球
 
 // 出発
 function go() {
     universe.core.camera.position = universe.core.getObjectPosition('realearth');
     universe.core.toggleGoStar();
+    $('#planet_info').hide();
 }
 
 // 次の星
 function nextStar() {
-    selectedStarNum++;
-    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+    selectedStarNum = (selectedStarNum + 1) % starList.length;
+    universe.core.setDestination(starList[selectedStarNum]);
+    $('#planet_info').hide();
 }
 
 // 前の星
 function prevStar() {
     selectedStarNum--;
     if (selectedStarNum < 0) {
-        selectedStarNum = starList.length -1;
+        selectedStarNum += starList.length;
     }
-    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+    universe.core.setDestination(starList[selectedStarNum]);
+    $('#planet_info').hide();
 }
+
+$(document).on('select:done', function() {
+    new Audio('sound/picopicon.ogg').play();  // 効果音: 魔王魂
+    $('#planet_info').fadeIn('fast').find('.text').text({
+        earth: 'SUN',
+        mercury: 'MERCURY',
+        venus: 'VENUS',
+        realearth: 'EARTH',
+        mars: 'MARS',
+        jupiter: 'JUPITER',
+        saturn: 'SATURN',
+        uranus: 'URANUS',
+        neptune: 'NEPTUNE',
+        pluto: 'PLUTO'
+    }[starList[selectedStarNum]]);
+});
