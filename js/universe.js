@@ -613,7 +613,7 @@ UNIVERSE.Core3D = function (container) {
             );
             if (!window.arrived && dist < sceneTarget.radius) {
                 window.arrived = true;
-                location.href = 'http://nara-koko.com/ginga_test/arrival.html';
+                location.href = './arrival.php?star='+self.destination;
             }
 
             if (dist > 1000000) {
