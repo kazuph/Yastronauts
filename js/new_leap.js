@@ -41,7 +41,7 @@ function ticket() {
     //$('#ticket').animate({
     tickets[selectedStarNum].animate({
         right: right},300)
-      .delay(10000).animate({
+      .delay(7500).animate({
         right: leftover},300, null, function(){
             go();
         });
