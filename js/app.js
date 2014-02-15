@@ -124,5 +124,6 @@ function go() {
     // 初期の位置に戻る
     universe.core.moveCameraByPosition(initialPosition);
     universe.core.toggleGoStar();
+    universe.core.camera.position = universe.core.getObjectPosition('realearth');
 }
 
