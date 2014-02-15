@@ -170,3 +170,18 @@ $(document).on('select:done', function() {
 function speedUp() { universe.core.camera.velocity = 0.05; }
 function speedDown() { universe.core.camera.velocity = 0.005; }
 
+var starList = [
+    'earth',
+    'mercury',
+    'venus',
+    'realearth',
+    'mars',
+    'jupiter',
+    'saturn',
+    'uranus',
+    'neptune',
+    'pluto'
+];
+
+console.log(universe.core.getObjectPosition(starList[0]));
+console.log(universe.core.getObjectPosition(starList[9]));
