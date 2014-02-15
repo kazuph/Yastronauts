@@ -540,6 +540,8 @@ UNIVERSE.Core3D = function (container) {
         camera.position.z = distance;
         vector = new THREE.Vector3();
 
+        camera.velocity = 0.005;
+
         // Scene into which the earth and other objects are displayed
         scene = new THREE.Scene();
         self.scene = scene;
@@ -577,10 +579,12 @@ UNIVERSE.Core3D = function (container) {
 
         if (goStar) {
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * camera.velocity;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * camera.velocity;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * camera.velocity;
             }
+
+            $("body").css("background-position", ((sceneTarget.position.x - scene.position.x) * 0.0005) + "px " + 0 + "px");
 
             var dist = Math.sqrt(
                 Math.pow(scene.position.x - camera.position.x, 2) +

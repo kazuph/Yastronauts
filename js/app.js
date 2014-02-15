@@ -166,3 +166,7 @@ $(document).on('select:done', function() {
         pluto: 'PLUTO'
     }[starList[selectedStarNum]]);
 });
+
+function speedUp() { universe.core.camera.velocity = 0.05; }
+function speedDown() { universe.core.camera.velocity = 0.005; }
+
