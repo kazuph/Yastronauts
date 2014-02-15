@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-  <input type="button" onClick="moveCamera('earth');" value="earth" />
-  <input type="button" onClick="moveCamera('mercury');" value="mercury" />
-  <input type="button" onClick="moveCamera('venus');" value="venus" />
-  <input type="button" onClick="moveCamera('realearth');" value="realearth" />
-  <input type="button" onClick="moveCamera('mars');" value="mars" />
-  <input type="button" onClick="moveCamera('jupiter');" value="jupiter" />
+  <input type="button" onClick="universe.core.setDestination('earth');" value="earth" />
+  <input type="button" onClick="universe.core.setDestination('mercury');" value="mercury" />
+  <input type="button" onClick="universe.core.setDestination('venus');" value="venus" />
+  <input type="button" onClick="universe.core.setDestination('realearth');" value="realearth" />
+  <input type="button" onClick="universe.core.setDestination('mars');" value="mars" />
+  <input type="button" onClick="universe.core.setDestination('jupiter');" value="jupiter" />
   <input type="button" onClick="go();" value="出発!" />
   <div id="universe"></div>
   <script src="js/three.min.js"></script>

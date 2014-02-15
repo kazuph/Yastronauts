@@ -480,6 +480,7 @@ UNIVERSE.Core3D = function (container) {
 
     self.setDestination = function(name) {
         self.destination = name;
+        scene.position = universe.core.getObjectPosition(name);
     };
 
     function setupRenderer() {
@@ -572,12 +573,12 @@ UNIVERSE.Core3D = function (container) {
                 goStar = 0;
             }
             // 近づいていく処理
-            // if (window.universe) {
-            //     scene.position = universe.core.getObjectPosition(self.destination);
-            // }
-            camera.position.x += (scene.position.x - camera.position.x) * 0.01;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.01;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.01;
+            if (window.universe) {
+                scene.position = universe.core.getObjectPosition(self.destination);
+            }
+            camera.position.x += (scene.position.x - camera.position.x) * 0.001;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.001;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.001;
         } else {
             // 原点(0, 0, 0) からの回転を見てしまっている？
             camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
@@ -865,7 +866,6 @@ UNIVERSE.Core3D = function (container) {
         // target.position = position_vector;
         // rotation = position_vector;
         // distance = 50000;
-        scene.position = position_vector;
     };
 
     this.moveCameraTo = function (position_vector) {

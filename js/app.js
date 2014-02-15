@@ -81,18 +81,6 @@ universe.play(date, 500, undefined);
 
 document.getElementById("universe").getElementsByTagName("canvas")[0].style.position = "";
 
-console.log('camera');
-console.log(universe.getCore().getCameraPosition());
-console.log('moon');
-console.log(universe.getCore().getObjectPosition('moon'));
-console.log(universe.getCore().getObjects('moon'));
-// console.log(CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch));
-moonPosition = CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch);
-
-function moveCamera(id){
-    console.log("moveCamera");
-    universe.getCore().lookAtStar(universe.getCore().getObjectPosition(id));
-}
-function go(){
-    universe.getCore().toggleGoStar();
+function go() {
+    universe.core.toggleGoStar();
 }
