@@ -43,7 +43,7 @@ var initialPosition = new UNIVERSE.ECICoordinates(
         -14213.99162,
         -39987.86471,
         -1115.314875,
-    2.865601523,
+         2.865601523,
         -1.007157587,
         -0.410247122
 );
@@ -80,3 +80,19 @@ universe.addJsonGeometryModel("dsp", "models/DSP.json", function() {
 universe.play(date, 500, undefined);
 
 document.getElementById("universe").getElementsByTagName("canvas")[0].style.position = "";
+
+console.log('camera');
+console.log(universe.getCore().getCameraPosition());
+console.log('moon');
+console.log(universe.getCore().getObjectPosition('moon'));
+console.log(universe.getCore().getObjects('moon'));
+// console.log(CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch));
+moonPosition = CoordinateConversionTools.getMoonPositionECIAtCurrentTime(epoch);
+
+function moveCamera(id){
+    console.log("moveCamera");
+    universe.getCore().lookAtStar(universe.getCore().getObjectPosition(id));
+}
+function go(){
+    universe.getCore().toggleGoStar();
+}

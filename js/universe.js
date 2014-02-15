@@ -436,6 +436,7 @@ UNIVERSE.Core3D = function (container) {
         light,
         overRenderer,
         curZoomSpeed = 0, // Constants for zooming, rotation, etc.
+        goStar = 0,
         mouse = {
             x : 0,
             y : 0
@@ -558,18 +559,32 @@ UNIVERSE.Core3D = function (container) {
 
         rotation.x += (target.x - rotation.x) * 0.1;
         rotation.y += (target.y - rotation.y) * 0.1;
+        // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-        // camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
-        // camera.position.y = distance * Math.sin(rotation.y);
-        // camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
-
-        if (window.universe) {
-            scene.position = universe.core.getObjectPosition(self.destination);
+        if (goStar) {
+            d = distanceXYZ(camera.position, scene.position);
+            console.log(d);
+            // TODO: 各星の半径 + α
+            if (d < 10000) {
+                target.position = camera.position;
+                rotation.position = camera.position;
+                goStar = 0;
+            }
+            // 近づいていく処理
+            // if (window.universe) {
+            //     scene.position = universe.core.getObjectPosition(self.destination);
+            // }
+            camera.position.x += (scene.position.x - camera.position.x) * 0.01;
+            camera.position.y += (scene.position.y - camera.position.y) * 0.01;
+            camera.position.z += (scene.position.z - camera.position.z) * 0.01;
+        } else {
+            // 原点(0, 0, 0) からの回転を見てしまっている？
+            camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+            camera.position.y = distance * Math.sin(rotation.y);
+            camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
         }
-        camera.position.x += (scene.position.x - camera.position.x) * 0.001;
-        camera.position.y += (scene.position.y - camera.position.y) * 0.001;
-        camera.position.z += (scene.position.z - camera.position.z) * 0.001;
+
         camera.lookAt(scene.position);
 
         vector.copy(camera.position);
@@ -818,16 +833,44 @@ UNIVERSE.Core3D = function (container) {
         return ret;
     };
 
-	  function getObjectForShape(shape) {
-		    var i;
-		    for (i in drawnObjects) {
-			      if (drawnObjects[i].shape && drawnObjects[i].shape.id === shape.object.id) {
-				        return i;
-			      }
-		    }
-	  }
+    this.getObjects = function () {
+        return drawnObjects;
+    };
+
+	function getObjectForShape(shape) {
+		var i;
+		for (i in drawnObjects) {
+			if (drawnObjects[i].shape && drawnObjects[i].shape.id === shape.object.id) {
+				return i;
+			}
+		}
+	}
+
+    function distanceXYZ(posi1, posi2) {
+        x = posi1.x - posi2.x;
+        y = posi1.y - posi2.y;
+        z = posi1.z - posi2.z;
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+    }
+
+    this.toggleGoStar = function () {
+        goStar = 1 - goStar;
+        console.log(goStar);
+    };
+
+    this.lookAtStar = function (position_vector) {
+        // console.log("moveCamera in universe");
+        // console.log(position_vector);
+        // camera.position = position_vector;
+        // target.position = position_vector;
+        // rotation = position_vector;
+        // distance = 50000;
+        scene.position = position_vector;
+    };
 
     this.moveCameraTo = function (position_vector) {
+        console.log("moveCamera in universe");
+
         // This method converts a position into the rotation coordinate system used to move the camera
         // The target.x parameter is the rotation angle from the positive Z axis
         // target.y is the rotation angle away from the z-x plane
@@ -1225,6 +1268,9 @@ UNIVERSE.Universe = function (time, refreshRate, container) {
     }
 
     // PROTECTED METHODS (API METHODS)
+    this.getCore = function () {
+        return core;
+    };
 
     /**
      Start playback for the universe
@@ -1388,6 +1434,8 @@ UNIVERSE.Universe = function (time, refreshRate, container) {
         var position = core.getObjectPosition(id),
             vector;
         if (position) {
+            console.log("positon");
+            console.log(positon);
             vector = new THREE.Vector3();
             vector.copy(position);
 
