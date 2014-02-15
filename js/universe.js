@@ -1262,11 +1262,14 @@ UNIVERSE.Core3D = function (container) {
         zoom(curZoomSpeed);
 
         //console.log("target: " + JSON.stringify(target));
+        console.log(self.distanceTarget);
         rotation.x += (target.x - rotation.x) * 0.1;
         rotation.y += (target.y - rotation.y) * 0.1;
+        // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
         camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
+
         camera.position.y = distance * Math.sin(rotation.y);
         camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
         camera.lookAt(scene.position);
@@ -1517,6 +1520,10 @@ UNIVERSE.Core3D = function (container) {
         return ret;
     };
 
+    this.getObjects = function () {
+        return drawnObjects;
+    };
+
 	function getObjectForShape(shape) {
 		var i;
 		for (i in drawnObjects) {
@@ -1526,7 +1533,19 @@ UNIVERSE.Core3D = function (container) {
 		}
 	}
 
+    this.lookAtStar = function (position_vector) {
+        // console.log("moveCamera in universe");
+        // console.log(position_vector);
+        // camera.position = position_vector;
+        target.position = position_vector;
+        rotation = position_vector;
+        // distance = 50000;
+        scene.position = position_vector;
+    };
+
     this.moveCameraTo = function (position_vector) {
+        console.log("moveCamera in universe");
+
         // This method converts a position into the rotation coordinate system used to move the camera
         // The target.x parameter is the rotation angle from the positive Z axis
         // target.y is the rotation angle away from the z-x plane
@@ -2090,6 +2109,8 @@ UNIVERSE.Universe = function (time, refreshRate, container) {
         var position = core.getObjectPosition(id),
             vector;
         if (position) {
+            console.log("positon");
+            console.log(positon);
             vector = new THREE.Vector3();
             vector.copy(position);
 
