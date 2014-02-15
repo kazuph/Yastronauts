@@ -2,26 +2,39 @@ var universe = new UNIVERSE.Universe(new Date(), 30, document.getElementById("un
 
 var earthExtensions = new UNIVERSE.EarthExtensions(universe, false);
 
-earthExtensions.addEarth("img/world3000.jpg", "img/earth_lights_lrg-dim.png");
+// earthExtensions.addEarth("img/world3000.jpg", "img/earth_lights_lrg-dim.png");
+earthExtensions.addEarth("img/moon_1024.jpg");
 
-earthExtensions.addMoon("img/moon_1024.jpg");
+// earthExtensions.addMoon("img/moon_1024.jpg");
+
+earthExtensions.addPlanet("img/mercury_1024.jpg", {
+    name: 'mercury',
+    distance: 580,
+    radius: 380
+});
 
 earthExtensions.addPlanet("img/moon_1024.jpg", {
-    name: 'test',
-    distance: 1000,
-    radius: 8000
+    name: 'venus',
+    distance: 1080,
+    radius: 950
 });
 
 earthExtensions.addPlanet("img/world3000.jpg", {
+    name: 'realearth',
+    distance: 1500,
+    radius: 1000
+});
+
+earthExtensions.addPlanet("img/mars_1024.jpg", {
     name: 'mars',
-    distance: 3000,
-    radius: 4000
+    distance: 2280,
+    radius: 530
 });
 
-earthExtensions.addPlanet("img/world3000.jpg", {
-    name: 'hoge',
-    distance: 5000,
-    radius: 4000
+earthExtensions.addPlanet("img/jupiter_1024.jpg", {
+    name: 'jupiter',
+    distance: 7800,
+    radius: 11200
 });
 
 earthExtensions.addSun();
