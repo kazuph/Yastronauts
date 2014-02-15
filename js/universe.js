@@ -472,7 +472,7 @@ UNIVERSE.Core3D = function (container) {
 	      intersectionListeners = [];
 
     self.distanceTarget = 50000;
-    self.destination = 'hoge';
+    self.destination = 'earth';
 
     this.maxZoom = 500000;
     this.minZoom = 7000;
