@@ -20,7 +20,7 @@ Leap.loop(function(frame){
       }
       universe.setCurrentZoomDistance(nextDist);
       prevZ = z;
-      console.log(nextDist);
+      //console.log(nextDist);
     }
   } else if (frame.fingers[0]) {
     var x = frame.fingers[0].tipPosition[0];
@@ -33,7 +33,7 @@ Leap.loop(function(frame){
       var zoomDamp = dist / (35000);
       universe.addRotationToCamera((x - myLeapBaseX) * 0.005 * zoomDamp, (y - myLeapBaseY) * 0.003 * zoomDamp);
     }
-    console.log("(" + x + "," + y + ")");
+    //console.log("(" + x + "," + y + ")");
   } else {
     myLeapBaseX = 0;
     myLeapBaseY = 0;
