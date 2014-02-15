@@ -472,7 +472,7 @@ UNIVERSE.Core3D = function (container) {
 	      //GAMEPAD_PAN_SCALING_FACTOR = 5000;
 	      intersectionListeners = [];
 
-    self.distanceTarget = 50000;
+    self.distanceTarget = 7000;
     self.destination = 'earth';
 
     this.maxZoom = 500000;
@@ -563,7 +563,6 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-
         if (goStar) {
             // 近づいていく処理
             if (window.universe) {
@@ -582,7 +581,6 @@ UNIVERSE.Core3D = function (container) {
             if (window.universe) {
                 
                 var p = universe.core.getObjectPosition(self.destination);
-                console.log(p);
                 // 星の座標を加算するとカメラが近くまで移動するので、選択時に使えるかも
                 scene.position = p;
                 camera.position.x = p.x + distance * Math.sin(rotation.x) * Math.cos(rotation.y);
@@ -862,15 +860,6 @@ UNIVERSE.Core3D = function (container) {
     this.toggleGoStar = function () {
         goStar = 1 - goStar;
         console.log(goStar);
-    };
-
-    this.lookAtStar = function (position_vector) {
-        // console.log("moveCamera in universe");
-        // console.log(position_vector);
-        // camera.position = position_vector;
-        // target.position = position_vector;
-        // rotation = position_vector;
-        // distance = 50000;
     };
 
     this.moveCameraTo = function (position_vector) {

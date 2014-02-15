@@ -113,6 +113,8 @@ universe.play(date, 500, undefined);
 
 document.getElementById("universe").getElementsByTagName("canvas")[0].style.position = "";
 
+universe.core.setDestination('realearth');
+
 function go() {
     universe.core.toggleGoStar();
 }
