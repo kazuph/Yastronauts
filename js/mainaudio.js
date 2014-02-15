@@ -6,7 +6,7 @@ function announce() {
   audio.play();
   audio = new Audio("audio/announce.mp3");
   audio.play();
-  setTimeout("departure()", 5000);
+  setTimeout("departure()", 6000);
 }
 
 function departure() {

@@ -44,14 +44,19 @@ function swipe_forward_fnc() {
   console.log("swipe_forward");
   ticket();
 }
+
 function swipe_right_fnc() {
-  prevStar();
+  if (!disable) {
+    prevStar();
+  }
   reset_state();
   flg = true;
   console.log("swipe_right");
 }
 function swipe_left_fnc() {
-  nextStar();
+  if (!disable) {
+    nextStar();
+  }
   reset_state();
   flg = true;
   console.log("swipe_left");
@@ -163,3 +168,22 @@ Leap.loop(controllerOptions, function(frame) {
     flg = false;
   }
 });
+
+function myKeyDown(event) {
+  switch (event.keyCode) {
+  case 37:
+    swipe_left_fnc();
+    break;
+  case 39:
+    swipe_right_fnc();
+    break;
+  case 38:
+  case 13:
+    swipe_forward_fnc();
+    break;
+  case 40:
+    break;
+  }
+}
+
+document.onkeydown = myKeyDown;
