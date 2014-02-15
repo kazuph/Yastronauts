@@ -64,33 +64,35 @@
             var date = new Date();
             var epoch = new Date(date);
 
-            universe.addJsonGeometryModel("dsp", "models/DSP.json", function() {
-                var spaceObject = new UNIVERSE.SpaceObject(
-                    "space_object_id",
-                    "space_object_name",
-                    "dsp",
-                    function(time, updateState) {
-                        time = new Date(universe.getCurrentUniverseTime());
-                        var elapsedTime = time - epoch;
-                        dt = 100;
-                        var location = OrbitPropagator.propagateOrbit(initialPosition, elapsedTime/1000, dt, epoch);
-                        //console.log(JSON.stringify(location));
-                        return location;
-                    },
-                    true,
-                    true,
-                    [],
-                    initialPosition,
-                    universe,
-                    earthExtensions
-                );
-                spaceObject.showVehicle = true;
+            // モデリングしたオブジェクトの追加
+            // universe.addJsonGeometryModel("dsp", "models/DSP.json", function() {
+            //     var spaceObject = new UNIVERSE.SpaceObject(
+            //         "space_object_id",
+            //         "space_object_name",
+            //         "dsp",
+            //         function(time, updateState) {
+            //             time = new Date(universe.getCurrentUniverseTime());
+            //             var elapsedTime = time - epoch;
+            //             dt = 100;
+            //             var location = OrbitPropagator.propagateOrbit(initialPosition, elapsedTime/1000, dt, epoch);
+            //             //console.log(JSON.stringify(location));
+            //             return location;
+            //         },
+            //         true,
+            //         true,
+            //         [],
+            //         initialPosition,
+            //         universe,
+            //         earthExtensions
+            //     );
+            //     spaceObject.showVehicle = true;
 
-                earthExtensions.addSpaceObject(spaceObject, function() {earthExtensions.showAllOrbitLines(true)});
+            //     earthExtensions.addSpaceObject(spaceObject, function() {earthExtensions.showAllOrbitLines(true)});
 
-            });
+            // });
 
 
+            // 地球の平面に出すオブジェクト 1
             var groundObject = new UNIVERSE.GroundObject("blue_dot", "blue_dot", null, function() {
                 return CoordinateConversionTools.convertLLAtoECI(
                     new UNIVERSE.LLACoordinates(40, -104, 1),
@@ -99,16 +101,17 @@
             })
             earthExtensions.addGroundDot(groundObject, 0x0000FF, 500, function () {});
 
+            // 地球の平面に出すオブジェクト 2
             var groundObject2 = new UNIVERSE.GroundObject("green_dot", "green_dot", null, function() {
                 return CoordinateConversionTools.convertLLAtoECI(
                     new UNIVERSE.LLACoordinates(50, -95, 1),
                     CoordinateConversionTools.convertTimeToGMST(universe.getCurrentUniverseTime())
                 );
             })
-
             earthExtensions.addGroundDot(groundObject2, 0x00FF00, 300, function () {});
 
-            earthExtensions.addStaticGroundDot("static_object", "name", 0xFF0000, 400, 45, 15, 1000, function () {});
+            // 地球を中心とする空中の物体
+            earthExtensions.addStaticGroundDot("static_object", "name", 0xFF0FF0, 400, 45, 15, 1000, function () {});
 
             universe.play(date, 500, undefined);
 
