@@ -20,11 +20,12 @@ function reset_state() {
 }
 function ticket() {
   if (!disable) {
+    announce();
     var right = Math.floor(($(window).width() - $("#ticket").width()) / 2);  
     var leftover = Math.floor(right * 2 + 410);  
     $('#ticket').animate({
         right: right},300)
-      .delay(1000).animate({
+      .delay(10000).animate({
         right: leftover},300, null, function(){
             go();
         });

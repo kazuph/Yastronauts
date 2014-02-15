@@ -1,6 +1,7 @@
 #ticket{
 	width:400px;
 	position: fixed;
+  top: 40%;
 	right:-410px;
 }
 
