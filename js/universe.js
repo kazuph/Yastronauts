@@ -564,8 +564,8 @@ UNIVERSE.Core3D = function (container) {
         distance += (self.distanceTarget - distance) * 0.3;
 
         if (goStar) {
-            d = distanceXYZ(camera.position, scene.position);
-            console.log(d);
+            var d = distanceXYZ(camera.position, scene.position);
+
             // TODO: 各星の半径 + α
             if (d < 10000) {
                 target.position = camera.position;
