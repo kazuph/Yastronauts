@@ -12,7 +12,7 @@ var baseY = 0;
 var selected = 4;
 var prev_selected = 4;
 var base_selected = 4;
-var th = 70;
+var th = 50;
 select_num = 8;
 
 function change_color(selected, prev_selected) {
@@ -159,6 +159,7 @@ Leap.loop(controllerOptions, function(frame){
   case 1:
     if (!animation_flg) {
       var y = frame.fingers[0].tipPosition[1];
+      menu_count += 1;
       if (baseY == 0) {
         if ( menu_count > menu_th ) {
           hide_flg = false;
@@ -166,8 +167,6 @@ Leap.loop(controllerOptions, function(frame){
           baseY = y;
           prev_selected = base_selected;
           setMenuOpacity(1);
-        } else {
-          menu_count += 1;
         }
       } else {
         var select_dist = Math.round((baseY - y) / th);
