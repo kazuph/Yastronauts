@@ -66,7 +66,7 @@ earthExtensions.addPlanet("img/neptune_1024.jpg", {
 earthExtensions.addPlanet("img/pluto_1024.jpg", {
     name: 'pluto',
     distance: 59000,
-    radius: 180,
+    radius: 1800,  // x10 size :)
     speed: 0.0003015908086610694
 });
 

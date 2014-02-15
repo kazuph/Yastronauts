@@ -480,11 +480,13 @@ UNIVERSE.Core3D = function (container) {
     this.minZoom = 7000;
 
     self.setDestination = function(name) {
-        self.destination = name;
+        self.destination = name || self.destination;
+
+        var object = universe.core.getObject(name);
 
         sceneTarget = {};
-        sceneTarget.position = universe.core.getObjectPosition(name);
-        // scene.position = universe.core.getObjectPosition(name);
+        sceneTarget.position = object.shape.position;
+        sceneTarget.radius = object.shape.geometry.radius;
     };
 
     function setupRenderer() {
@@ -567,16 +569,16 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         distance += (self.distanceTarget - distance) * 0.3;
 
-        if (sceneTarget) {
-            scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
-            scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
-            scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
-        }
+        // XXX: 目的地をピタリと固定する
+        // if (window.universe) {
+        //     universe.core.setDestination(universe.core.destination);
+        // }
 
         if (goStar) {
-            // 近づいていく処理
-            if (window.universe) {
-                sceneTarget.position = universe.core.getObjectPosition(self.destination);
+            if (sceneTarget) {
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
             }
 
             camera.position.x += (scene.position.x - camera.position.x) * 0.005;
@@ -584,14 +586,14 @@ UNIVERSE.Core3D = function (container) {
             camera.position.z += (scene.position.z - camera.position.z) * 0.005;
 
         } else {
-            // 原点(0, 0, 0) からの回転を見てしまっている？
-            if (window.universe) {
-                var p = universe.core.getObjectPosition(self.destination);
-                // 星の座標を加算するとカメラが近くまで移動するので、選択時に使えるかも
-                scene.position = p;
-                camera.position.x = p.x + distance * Math.sin(rotation.x) * Math.cos(rotation.y);
-                camera.position.y = p.y + distance * Math.sin(rotation.y);
-                camera.position.z = p.z + distance * Math.cos(rotation.x) * Math.cos(rotation.y);
+            if (sceneTarget) {
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.05;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.05;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.05;
+
+                camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
+                camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
+                camera.position.z += (scene.position.z + sceneTarget.radius * 3 - camera.position.z) * 0.1;
             }
         }
 
@@ -839,6 +841,14 @@ UNIVERSE.Core3D = function (container) {
         var ret;
         if (drawnObjects[id] !== undefined && drawnObjects[id].shape !== undefined) {
 	          ret = drawnObjects[id].shape.position;
+        }
+        return ret;
+    };
+
+    this.getObject = function (id) {
+        var ret;
+        if (drawnObjects[id] !== undefined && drawnObjects[id].shape !== undefined) {
+	          ret = drawnObjects[id];
         }
         return ret;
     };
