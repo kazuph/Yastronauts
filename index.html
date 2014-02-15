@@ -27,12 +27,14 @@
 
     <body>
         <div id="d">
-            <div id="info"><a href="http://universejs.com" target="_blank">universe.js</a> - Basic Earth and Moon Example</div>
+            <div id="info">銀河の車窓から</div>
 
             <div id="universe"></div>
         </div>
 
+        <!-- base library -->
         <script src="js/universe.js"></script>
+        <!-- earth moon extension -->
         <script src="js/earth-extensions.js"></script>
 
         <script>
@@ -41,10 +43,13 @@
 
             var earthExtensions = new UNIVERSE.EarthExtensions(universe, false);
 
+            // 地球は一旦これでOK
             earthExtensions.addEarth("img/world3000.jpg", "img/earth_lights_lrg-dim.png")
 
+            // earthなのに月の情報を持っている…
             earthExtensions.addMoon("img/moon_1024.jpg")
 
+            // 光点？
             earthExtensions.addSun();
 
             var initialPosition = new UNIVERSE.ECICoordinates(
