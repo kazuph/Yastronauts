@@ -540,6 +540,8 @@ UNIVERSE.Core3D = function (container) {
         camera.position.z = distance;
         vector = new THREE.Vector3();
 
+        camera.velocity = 0.005;
+
         // Scene into which the earth and other objects are displayed
         scene = new THREE.Scene();
         self.scene = scene;
@@ -552,6 +554,25 @@ UNIVERSE.Core3D = function (container) {
         //
         // var ambientLight = new THREE.AmbientLight( 0x000000 );
         // scene.add(ambientLight);
+
+        // パーティクル
+        var geometry = new THREE.Geometry();
+        var numParticles = 20000;
+        for(var i = 0 ; i < numParticles ; i++) {
+            console.log("particle");
+            geometry.vertices.push(new THREE.Vector3(
+                        Math.random() * 4000000 - 2000000,
+                        Math.random() * 4000000 - 2000000,
+                        Math.random() * 4000000 - 2000000));
+        }
+        var material = new THREE.ParticleBasicMaterial({
+            size: 1000,
+            color: 0xFFFFFF
+        });
+        var mesh = new THREE.ParticleSystem(geometry, material);
+        mesh.position = new THREE.Vector3(0, 0, 0);
+        mesh.sortParticles = false;
+        scene.add(mesh);
 
         animate();
     }
@@ -570,31 +591,39 @@ UNIVERSE.Core3D = function (container) {
         // rotation.z += (target.z - rotation.z) * 0.1;
         // distance += (self.distanceTarget - distance) * 0.3;
 
+        // XXX: 目的地をピタリと固定する
+        if (window.universe) {
+            universe.core.setDestination(universe.core.destination);
+        }
+
         if (goStar) {
-            // XXX: 目的地をピタリと固定する
-            if (window.universe) {
-                universe.core.setDestination(universe.core.destination);
-            }
-
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * camera.velocity;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * camera.velocity;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * camera.velocity;
             }
 
-            camera.position.x += (scene.position.x - camera.position.x) * 0.005;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.005;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.005;
+            $("body").css("background-position", ((sceneTarget.position.x - scene.position.x) * 0.0005) + "px " + 0 + "px");
 
             var dist = Math.sqrt(
                 Math.pow(scene.position.x - camera.position.x, 2) +
                 Math.pow(scene.position.y - camera.position.y, 2) +
                 Math.pow(scene.position.z - camera.position.z, 2)
             );
-
             if (!window.arrived && dist < sceneTarget.radius) {
                 window.arrived = true;
                 location.href = 'http://nara-koko.com/ginga_test/arrival.html';
+            }
+
+            if (dist > 1000000) {
+                var ratio = 0.005 / Math.pow(dist / 1000000, 2);
+                camera.position.x += (scene.position.x - camera.position.x) * ratio;
+                camera.position.y += (scene.position.y - camera.position.y) * ratio;
+                camera.position.z += (scene.position.z - camera.position.z) * ratio;
+            } else {
+                camera.position.x += (scene.position.x - camera.position.x) * 0.005;
+                camera.position.y += (scene.position.y - camera.position.y) * 0.005;
+                camera.position.z += (scene.position.z - camera.position.z) * 0.005;
             }
 
         } else {
@@ -602,10 +631,26 @@ UNIVERSE.Core3D = function (container) {
                 scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.05;
                 scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.05;
                 scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.05;
+                document.body.style.backgroundPositionX = ((sceneTarget.position.x - scene.position.x) * 0.001) + 'px';
 
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
                 camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
                 camera.position.z += (scene.position.z + sceneTarget.radius * 3 - camera.position.z) * 0.1;
+
+                var dist = Math.sqrt(
+                    Math.pow(scene.position.x + sceneTarget.radius * 3 - camera.position.x, 2) +
+                    Math.pow(scene.position.y + sceneTarget.radius * 3 - camera.position.y, 2) +
+                    Math.pow(scene.position.z + sceneTarget.radius * 3 - camera.position.z, 2)
+                );
+
+                if (dist < 500) {
+                    if (!window.picopicon) {
+                        window.picopicon = true;
+                        $(document).triggerHandler('select:done');
+                    }
+                } else {
+                    window.picopicon = false;
+                }
             }
         }
 
@@ -654,6 +699,9 @@ UNIVERSE.Core3D = function (container) {
     function onMouseMove(event) {
         mouse.x = -event.clientX;
         mouse.y = event.clientY;
+        console.log(mouse.x);
+        console.log(mouse.y);
+        // $("body").css("background-position", mouse.x + "px " + mouse.y + "px");
 
         var zoomDamp = distance / (35000);
 

@@ -4,5 +4,41 @@
 }
 
 body {
-    background: url(../img/stars.jpg);
+    background: #000 url(../img/stars.jpg) fixed 0 0;
+}
+
+#planet_info {
+    border-bottom: 5px solid #3c3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 200px;
+    margin-left: 150px;
+    z-index: 1000;
+    display: none;
+
+    line-height: 320px;
+    vertical-align: bottom;
+    color: #3c3;
+    font-size: 48px;
+    font-family: helvetica;
+    text-indent: 20px;
+    box-shadow: 0 2px 1px -2px black;
+}
+
+#planet_info:before {
+    content: ' ';
+    border-bottom: 5px solid #3c3;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    margin-left: -100px;
+    margin-top: 23px;
+    box-shadow: 0 2px 1px -2px black;
+    -webkit-transform: rotate(30deg);
+}
+
+#planet_info .text {
+    padding-right: 20px;
+    text-shadow: 0 0 1px #000;
 }

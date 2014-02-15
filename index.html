@@ -14,21 +14,27 @@
   <input type="button" onClick="prevStar();" value="prev" />
   <input type="button" onClick="nextStar();" value="next" />
   <input type="button" onClick="go();" value="出発!" />
+  <!-- <input type="button" onClick="speedUp();" value="speed up" /> -->
+  <!-- <input type="button" onClick="speedDown();" value="speed down" /> -->
 
   <div id="ticket">
-  <img src="img/ticket_off.png">
+    <img src="img/ticket_off.png">
   </div>
 
+  <div id="planet_info"><div class="text"></div></div>
+
   <div id="universe"></div>
+
+  <!-- for leap motion -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
+  <script src="js/new_leap.js"></script>
+
   <script src="js/three.min.js"></script>
   <script src="js/universe.js"></script>
   <script src="js/earth-extensions.js"></script>
   <script src="js/app.js"></script>
 
-  <!-- for leap motion -->
-  <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="js/new_leap.js"></script>
   <script src="js/mainaudio.js"></script>
 </body>
 </html>
