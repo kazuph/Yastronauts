@@ -1273,12 +1273,16 @@ UNIVERSE.Core3D = function (container) {
             console.log(d);
             // TODO: 各星の半径 + α
             if (d < 10000) {
+                target.position = camera.position;
+                rotation.position = camera.position;
                 goStar = 0;
             }
+            // 近づいていく処理
             camera.position.x += (scene.position.x - camera.position.x) * 0.01;
             camera.position.y += (scene.position.y - camera.position.y) * 0.01;
             camera.position.z += (scene.position.z - camera.position.z) * 0.01;
         } else {
+            // 原点(0, 0, 0) からの回転を見てしまっている？
             camera.position.x = distance * Math.sin(rotation.x) * Math.cos(rotation.y);
             camera.position.y = distance * Math.sin(rotation.y);
             camera.position.z = distance * Math.cos(rotation.x) * Math.cos(rotation.y);
