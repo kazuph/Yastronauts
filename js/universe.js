@@ -479,6 +479,10 @@ UNIVERSE.Core3D = function (container) {
     this.maxZoom = 500000;
     this.minZoom = 7000;
 
+    self.getDestination = function() {
+        return universe.core.getObjectPosition(name);
+    };
+
     self.setDestination = function(name) {
         self.destination = name || self.destination;
 
