@@ -678,7 +678,7 @@ UNIVERSE.Core3D = function (container) {
                 Math.pow(scene.position.y - camera.position.y, 2) +
                 Math.pow(scene.position.z - camera.position.z, 2)
             );
-            if (!window.arrived && dist < sceneTarget.radius) {
+            if (!window.arrived && dist < sceneTarget.radius * 1.1) {
                 window.arrived = true;
                 location.href = './arrival.php?star='+self.destination;
             }
@@ -696,9 +696,9 @@ UNIVERSE.Core3D = function (container) {
 
         } else {
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.9;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.9;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.9;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.1;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.1;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.1;
                 document.body.style.backgroundPositionX = ((sceneTarget.position.x - scene.position.x) * 0.001) + 'px';
 
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
@@ -711,7 +711,7 @@ UNIVERSE.Core3D = function (container) {
                     Math.pow(scene.position.z + sceneTarget.radius * 3 - camera.position.z, 2)
                 );
 
-                if (dist < 500) {
+                if (dist < 1000) {
                     if (!window.picopicon) {
                         window.picopicon = true;
                         $(document).triggerHandler('select:done');
