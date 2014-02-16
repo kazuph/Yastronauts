@@ -24,6 +24,7 @@ body {
     font-family: helvetica;
     text-indent: 20px;
     box-shadow: 0 2px 1px -2px black;
+    cursor: default;
 }
 
 #planet_info:before {
@@ -43,4 +44,39 @@ body {
 #planet_info .text {
     padding-right: 20px;
     text-shadow: 0 0 1px #000;
+}
+
+.btn-prev,
+.btn-next,
+.btn-go {
+    position: absolute;
+    top: 5px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, .5);
+    border: 1px solid #aaa;
+    margin: 2px;
+    width: 63px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.btn-prev:hover,
+.btn-next:hover,
+.btn-go:hover {
+    background: rgba(200, 200, 255, .5);
+    border: 1px solid #99c;
+    color: #004;
+}
+
+.btn-prev {
+    left: 5px;
+}
+.btn-next {
+    left: 95px;
+}
+.btn-go {
+    left: 185px;
 }

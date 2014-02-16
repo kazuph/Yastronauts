@@ -523,7 +523,12 @@ UNIVERSE.Planet = function (universe, earthExtensions, planetImageURL, options) 
                     y: convertedLocation.y,
                     z: convertedLocation.z
                 };
+
                 this.currentLocation = propagatedValue;
+
+                var rotationAngle = MathTools.toRadians(CoordinateConversionTools.convertTimeToGMST(universe.getCurrentUniverseTime()));
+                dayPlanetMesh.rotation.y = rotationAngle - earthExtensions.rotationOffsetFromXAxis;
+                planetMesh.rotation.y = rotationAngle - earthExtensions.rotationOffsetFromXAxis;
             },
             function () {
                 universe.draw(this.id + "_day", dayPlanetMesh, false);
