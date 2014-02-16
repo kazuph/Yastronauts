@@ -68,6 +68,8 @@ UNIVERSE.Earth = function (universe, earthExtensions, dayImageURL, nightImageURL
         nightMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             overdraw: true,
+            // wireframe: true,
+            opacity: 0.5,
             map: earthAtNightTexture,
             blending: THREE.AdditiveBlending
         }),

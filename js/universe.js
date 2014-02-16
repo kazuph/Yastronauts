@@ -491,12 +491,15 @@ UNIVERSE.Core3D = function (container) {
 
     function setupRenderer() {
         projector = new THREE.Projector();
-        renderer = new THREE.WebGLRenderer({
-            antialias : true
-        });
+        renderer = new THREE.WebGLRenderer(
+            { antialias: true, alpha: true }
+        );
         renderer.autoClear = false;
         renderer.setClearColorHex(0x000000, 0.0);
         renderer.setSize(w, h);
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+
 
         renderer.domElement.style.position = 'absolute';
 
@@ -550,14 +553,15 @@ UNIVERSE.Core3D = function (container) {
 
         light = new THREE.DirectionalLight(0xffffff, 0);
         light.position.set(0, 0, 0).normalize();
+        light.shadowCameraVisible = true;
         scene.add(light);
         //
-        // var ambientLight = new THREE.AmbientLight( 0x000000 );
-        // scene.add(ambientLight);
+        var ambientLight = new THREE.AmbientLight( 0x000000 );
+        scene.add(ambientLight);
 
         // パーティクル
         var geometry = new THREE.Geometry();
-        var numParticles = 4000;
+        var numParticles = 8000;
         for(var i = 0 ; i < numParticles ; i++) {
             // 冥王星の位置 {x: -1375849.9780403278,  y: 1126170.471690741,  z: 3260436.9624934252}
             geometry.vertices.push(new THREE.Vector3(
@@ -566,13 +570,73 @@ UNIVERSE.Core3D = function (container) {
                 Math.random() * 4000000));
         }
         var material = new THREE.ParticleBasicMaterial({
-            size: 1500,
+            size: 2000,
             color: 0xFFFFFF
         });
         var mesh = new THREE.ParticleSystem(geometry, material);
         mesh.position = new THREE.Vector3(0, 0, 0);
         mesh.sortParticles = false;
         scene.add(mesh);
+
+        // レンズフレアを作成
+
+        var textureFlare0 = THREE.ImageUtils.loadTexture( "img/lensflare0.png" );
+        var textureFlare2 = THREE.ImageUtils.loadTexture( "img/lensflare1.png" );
+        var textureFlare3 = THREE.ImageUtils.loadTexture( "img/lensflare2.png" );
+
+        addLight( 0.55, 0.9, 0.5, 0, 0, 0 );
+        // addLight( 0.08, 0.8, 0.5, 0, 0, 0 );
+        // addLight( 0.995, 0.5, 0.9, 8, 0, 0 );
+
+        function addLight( h, s, l, x, y, z ) {
+
+            var light = new THREE.PointLight( 0xffffff, 1.5, 8000 );
+            light.position.set( x, y, z );
+            scene.add( light );
+
+            var flareColor = new THREE.Color( 0xffffff );
+
+            var lensFlare = new THREE.LensFlare( textureFlare0, 700, 0.0, THREE.AdditiveBlending, flareColor );
+
+            lensFlare.add( textureFlare2, 812, 0.0, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare2, 812, 0.0, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare2, 8120, 0.0, THREE.AdditiveBlending );
+
+            lensFlare.add( textureFlare3, 600, 1.6, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 7000, 1.7, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 1900, 0.9, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 790, 1.0, THREE.AdditiveBlending );
+
+            lensFlare.customUpdateCallback = lensFlareUpdateCallback;
+            lensFlare.position = light.position;
+
+            scene.add( lensFlare );
+
+        }
+
+        function lensFlareUpdateCallback( object ) {
+
+            var f, fl = object.lensFlares.length;
+            var flare;
+            var vecX = -object.positionScreen.x * 2;
+            var vecY = -object.positionScreen.y * 2;
+
+
+            for( f = 0; f < fl; f++ ) {
+
+                flare = object.lensFlares[ f ];
+
+                flare.x = object.positionScreen.x + vecX * flare.distance;
+                flare.y = object.positionScreen.y + vecY * flare.distance;
+
+                flare.rotation = 0;
+
+            }
+
+            object.lensFlares[ 2 ].y += 0.025;
+            object.lensFlares[ 3 ].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
+
+        }
 
         // XXX: wait particle creation
         setTimeout(animate, 1000);
