@@ -689,16 +689,16 @@ UNIVERSE.Core3D = function (container) {
                 camera.position.y += (scene.position.y - camera.position.y) * ratio;
                 camera.position.z += (scene.position.z - camera.position.z) * ratio;
             } else {
-                camera.position.x += (scene.position.x - camera.position.x) * 0.012;
-                camera.position.y += (scene.position.y - camera.position.y) * 0.012;
-                camera.position.z += (scene.position.z - camera.position.z) * 0.012;
+                camera.position.x += (scene.position.x - camera.position.x) * 0.015;
+                camera.position.y += (scene.position.y - camera.position.y) * 0.015;
+                camera.position.z += (scene.position.z - camera.position.z) * 0.015;
             }
 
         } else {
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.06;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.06;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.06;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.07;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.07;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.07;
                 document.body.style.backgroundPositionX = ((sceneTarget.position.x - scene.position.x) * 0.001) + 'px';
 
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
