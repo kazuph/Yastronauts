@@ -132,13 +132,15 @@ Leap.loop(controllerOptions, function(frame) {
               }
             }
           } else if (Math.abs(dir_z) > Math.abs(dir_y) && Math.abs(dir_z) > Math.abs(dir_x)) {
-            if (swipe_forward_cnt > Z_SWIPE_MAX) {
-              swipe_forward_fnc();
-            } else if ((gesture.state == "stop") && (swipe_forward_cnt > Z_SWIPE_TH)) {
-              swipe_forward_fnc();
-            } else {
-              if (Math.abs(swipe_z) < Math.abs(dir_z)) {
-                swipe_z = dir_z;
+            if (dir_z < 0) {
+              if (swipe_forward_cnt > Z_SWIPE_MAX) {
+                swipe_forward_fnc();
+              } else if ((gesture.state == "stop") && (swipe_forward_cnt > Z_SWIPE_TH)) {
+                swipe_forward_fnc();
+              } else {
+                if (Math.abs(swipe_z) < Math.abs(dir_z)) {
+                  swipe_z = dir_z;
+                }
               }
             }
           }
