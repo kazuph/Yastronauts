@@ -47,6 +47,18 @@ earthExtensions.addPlanet("img/saturn_1024.jpg", {
     radius: 9400,
     speed: 0.00104
 });
+var saturnring = new THREE.Mesh(
+    new THREE.CylinderGeometry(15000, 15000, 1, 32, false),
+    new THREE.MeshBasicMaterial({
+        color: 0xffffdd,
+        doubleSided: true,
+        wireframe: false,
+        overdraw: true,
+        opacity: .5
+    })
+);
+saturnring.position = universe.core.getObjectPosition('saturn');
+universe.core.scene.add(saturnring);
 
 earthExtensions.addPlanet("img/uranus_1024.jpg", {
     name: 'uranus',

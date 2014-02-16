@@ -36,6 +36,8 @@ body {
     margin-top: 23px;
     box-shadow: 0 2px 1px -2px black;
     -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    transform: rotate(30deg);
 }
 
 #planet_info .text {

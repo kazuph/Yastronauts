@@ -12,19 +12,36 @@ var swipe_right_cnt = 0;
 var swipe_forward_cnt = 0;
 var circle_cnt = 0;
 
+var tickets = new Array(
+$('#ticket0'),
+$('#ticket1'),
+$('#ticket2'),
+$('#ticket3'),
+$('#ticket4'),
+$('#ticket5'),
+$('#ticket6'),
+$('#ticket7'),
+$('#ticket8'),
+$('#ticket9')
+);
+
 function reset_state() {
   swipe_left_cnt = 0;
   swipe_right_cnt = 0;
   swipe_forward_cnt = 0;
   circle_cnt = 0;
 }
+
 function ticket() {
   if (!disable) {
-    var right = Math.floor(($(window).width() - $("#ticket").width()) / 2);  
+    announce();
+    var right = Math.floor(($(window).width() - tickets[selectedStarNum].width()) / 2);  
     var leftover = Math.floor(right * 2 + 410);  
-    $('#ticket').animate({
+    //$('#ticket').src = tickets[selectedStarNum];
+    //$('#ticket').animate({
+    tickets[selectedStarNum].animate({
         right: right},300)
-      .delay(1000).animate({
+      .delay(7500).animate({
         right: leftover},300, null, function(){
             go();
         });
@@ -41,16 +58,23 @@ function swipe_forward_fnc() {
   reset_state();
   flg = true;
   console.log("swipe_forward");
-  ticket();
+  if (selectedStarNum != 3) { // other than earth
+    ticket();
+  }
 }
+
 function swipe_right_fnc() {
-  prevStar();
+  if (!disable) {
+    prevStar();
+  }
   reset_state();
   flg = true;
   console.log("swipe_right");
 }
 function swipe_left_fnc() {
-  nextStar();
+  if (!disable) {
+    nextStar();
+  }
   reset_state();
   flg = true;
   console.log("swipe_left");
@@ -108,13 +132,15 @@ Leap.loop(controllerOptions, function(frame) {
               }
             }
           } else if (Math.abs(dir_z) > Math.abs(dir_y) && Math.abs(dir_z) > Math.abs(dir_x)) {
-            if (swipe_forward_cnt > Z_SWIPE_MAX) {
-              swipe_forward_fnc();
-            } else if ((gesture.state == "stop") && (swipe_forward_cnt > Z_SWIPE_TH)) {
-              swipe_forward_fnc();
-            } else {
-              if (Math.abs(swipe_z) < Math.abs(dir_z)) {
-                swipe_z = dir_z;
+            if (dir_z < 0) {
+              if (swipe_forward_cnt > Z_SWIPE_MAX) {
+                swipe_forward_fnc();
+              } else if ((gesture.state == "stop") && (swipe_forward_cnt > Z_SWIPE_TH)) {
+                swipe_forward_fnc();
+              } else {
+                if (Math.abs(swipe_z) < Math.abs(dir_z)) {
+                  swipe_z = dir_z;
+                }
               }
             }
           }
@@ -162,3 +188,22 @@ Leap.loop(controllerOptions, function(frame) {
     flg = false;
   }
 });
+
+function myKeyDown(event) {
+  switch (event.keyCode) {
+  case 37:
+    swipe_left_fnc();
+    break;
+  case 39:
+    swipe_right_fnc();
+    break;
+  case 38:
+  case 13:
+    swipe_forward_fnc();
+    break;
+  case 40:
+    break;
+  }
+}
+
+document.onkeydown = myKeyDown;
