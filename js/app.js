@@ -182,15 +182,8 @@ $(document).on('select:done', function() {
 function speedUp() { universe.core.camera.velocity = 0.05; }
 function speedDown() { universe.core.camera.velocity = 0.005; }
 
-var starList = [
-    'earth',
-    'mercury',
-    'venus',
-    'realearth',
-    'mars',
-    'jupiter',
-    'saturn',
-    'uranus',
-    'neptune',
-    'pluto'
-];
+$(function() {
+    $('<a/>').addClass('btn-prev').text('< 前の星').on('click', prevStar).appendTo(document.body);
+    $('<a/>').addClass('btn-next').text('次の星 >').on('click', nextStar).appendTo(document.body);
+    $('<a/>').addClass('btn-go').text('出発!!').on('click', go).appendTo(document.body);
+});
