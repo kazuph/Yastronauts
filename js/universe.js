@@ -543,7 +543,7 @@ UNIVERSE.Core3D = function (container) {
         camera.position.z = distance;
         vector = new THREE.Vector3();
 
-        camera.velocity = 0.005;
+        camera.velocity = 0.007;
 
         // Scene into which the earth and other objects are displayed
         scene = new THREE.Scene();
