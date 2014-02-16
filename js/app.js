@@ -27,7 +27,7 @@ earthExtensions.addPlanet("img/world3000.jpg", {
     speed: 0.001
 });
 
-earthExtensions.addPlanet("img/mars_1024.jpg", {
+earthExtensions.addPlanet("img/firefox.jpg", {
     name: 'mars',
     distance: 2280,
     radius: 530,
