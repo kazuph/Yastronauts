@@ -597,14 +597,17 @@ UNIVERSE.Core3D = function (container) {
             universe.core.setDestination(universe.core.destination);
         }
 
+        // XXX: 土星の輪
+        if (window.saturnring) {
+            saturnring.position = universe.core.getObjectPosition('saturn');
+        }
+
         if (goStar) {
             if (sceneTarget) {
                 scene.position.x += (sceneTarget.position.x - scene.position.x) * camera.velocity;
                 scene.position.y += (sceneTarget.position.y - scene.position.y) * camera.velocity;
                 scene.position.z += (sceneTarget.position.z - scene.position.z) * camera.velocity;
             }
-
-            $("body").css("background-position", ((sceneTarget.position.x - scene.position.x) * 0.0005) + "px " + 0 + "px");
 
             var dist = Math.sqrt(
                 Math.pow(scene.position.x - camera.position.x, 2) +
