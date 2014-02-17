@@ -3,34 +3,64 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   <link rel="stylesheet" type="text/css" href="css/menu.css">
+  <link rel="stylesheet" type="text/css" href="css/ticket.css">
   <title>銀河の車窓から</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-  <input type="button" onClick="prevStar();" value="prev" />
-  <input type="button" onClick="nextStar();" value="next" />
-  <input type="button" onClick="go();" value="出発!" />
+  <audio id="bgm" src="audio/921.mp3" autoplay loop></audio>
+  <audio id="shushu_mp3" src="audio/shushu.mp3" loop></audio>
+  <audio id="announce_md3" src="audio/announce.mp3" ></audio>
+  <input type="hidden" onClick="prevStar();" value="prev" />
+  <input type="hidden" onClick="nextStar();" value="next" />
+  <input type="hidden" onClick="go();" value="出発!" />
+  <!-- <input type="button" onClick="speedUp();" value="speed up" /> -->
+  <!-- <input type="button" onClick="speedDown();" value="speed down" /> -->
 
-  <div class="select_stars" id="selector_wrapper">
-    <div id="select_0" class="selector">sun</div><!--<br/>-->
-    <div id="select_1" class="selector">mercury</div><!--<br/>-->
-    <div id="select_2" class="selector">venus</div><!--<br/>-->
-    <div id="select_3" class="selector">earth</div><!--<br/>-->
-    <div id="select_4" class="selector">moon</div><!--<br/>-->
-    <div id="select_5" class="selector">marse</div><!--<br/>-->
-    <div id="select_6" class="selector">jupiter</div><!--<br/>-->
-    <div id="select_7" class="selector">saturn</div><!--<br/>-->
+  <div id="ticket0" class="ticket">
+    <img src="img/ticket_taiyo.png"/>
+  </div>
+  <div id="ticket1" class="ticket">
+    <img src="img/ticket_sui.png"/>
+  </div>
+  <div id="ticket2" class="ticket">
+    <img src="img/ticket_kin.png"/>
+  </div>
+  <div id="ticket3" class="ticket">
+    <img src="img/ticket_off.png"/>
+  </div>
+  <div id="ticket4" class="ticket">
+    <img src="img/ticket_ka.png"/>
+  </div>
+  <div id="ticket5" class="ticket">
+    <img src="img/ticket_moku.png"/>
+  </div>
+  <div id="ticket6" class="ticket">
+    <img src="img/ticket_do.png"/>
+  </div>
+  <div id="ticket7" class="ticket">
+    <img src="img/ticket_tenou.png"/>
+  </div>
+  <div id="ticket8" class="ticket">
+    <img src="img/ticket_kaiou.png"/>
+  </div>
+  <div id="ticket9" class="ticket">
+    <img src="img/ticket_meiou.png"/>
   </div>
 
+  <div id="planet_info"><div class="text"></div></div>
+
   <div id="universe"></div>
+
+  <!-- for leap motion -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
+  <script src="js/new_leap.js"></script>
+
   <script src="js/three.min.js"></script>
   <script src="js/universe.js"></script>
   <script src="js/earth-extensions.js"></script>
   <script src="js/app.js"></script>
-
-  <!-- for leap motion -->
-  <script src="http://js.leapmotion.com/0.2.0/leap.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="js/new_leap.js"></script>
+  <script src="js/mainaudio.js"></script>
 </body>
 </html>

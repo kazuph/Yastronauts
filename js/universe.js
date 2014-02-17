@@ -491,12 +491,15 @@ UNIVERSE.Core3D = function (container) {
 
     function setupRenderer() {
         projector = new THREE.Projector();
-        renderer = new THREE.WebGLRenderer({
-            antialias : true
-        });
+        renderer = new THREE.WebGLRenderer(
+            { antialias: true, alpha: true }
+        );
         renderer.autoClear = false;
         renderer.setClearColorHex(0x000000, 0.0);
         renderer.setSize(w, h);
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+
 
         renderer.domElement.style.position = 'absolute';
 
@@ -540,6 +543,8 @@ UNIVERSE.Core3D = function (container) {
         camera.position.z = distance;
         vector = new THREE.Vector3();
 
+        camera.velocity = 0.005;
+
         // Scene into which the earth and other objects are displayed
         scene = new THREE.Scene();
         self.scene = scene;
@@ -548,12 +553,93 @@ UNIVERSE.Core3D = function (container) {
 
         light = new THREE.DirectionalLight(0xffffff, 0);
         light.position.set(0, 0, 0).normalize();
+        light.shadowCameraVisible = true;
         scene.add(light);
         //
-        // var ambientLight = new THREE.AmbientLight( 0x000000 );
-        // scene.add(ambientLight);
+        var ambientLight = new THREE.AmbientLight( 0x000000 );
+        scene.add(ambientLight);
 
-        animate();
+        // パーティクル
+        var geometry = new THREE.Geometry();
+        var numParticles = 8000;
+        for(var i = 0 ; i < numParticles ; i++) {
+            // 冥王星の位置 {x: -1375849.9780403278,  y: 1126170.471690741,  z: 3260436.9624934252}
+            geometry.vertices.push(new THREE.Vector3(
+                Math.random() * - 2000000,
+                Math.random() * 2000000,
+                Math.random() * 4000000));
+        }
+        var material = new THREE.ParticleBasicMaterial({
+            size: 2000,
+            color: 0xFFFFFF
+        });
+        var mesh = new THREE.ParticleSystem(geometry, material);
+        mesh.position = new THREE.Vector3(0, 0, 0);
+        mesh.sortParticles = false;
+        scene.add(mesh);
+
+        // レンズフレアを作成
+
+        var textureFlare0 = THREE.ImageUtils.loadTexture( "img/lensflare0.png" );
+        var textureFlare2 = THREE.ImageUtils.loadTexture( "img/lensflare1.png" );
+        var textureFlare3 = THREE.ImageUtils.loadTexture( "img/lensflare2.png" );
+
+        addLight( 0.55, 0.9, 0.5, 0, 0, 0 );
+        // addLight( 0.08, 0.8, 0.5, 0, 0, 0 );
+        // addLight( 0.995, 0.5, 0.9, 8, 0, 0 );
+
+        function addLight( h, s, l, x, y, z ) {
+
+            var light = new THREE.PointLight( 0xffffff, 1.5, 8000 );
+            light.position.set( x, y, z );
+            scene.add( light );
+
+            var flareColor = new THREE.Color( 0xffffff );
+
+            var lensFlare = new THREE.LensFlare( textureFlare0, 700, 0.0, THREE.AdditiveBlending, flareColor );
+
+            lensFlare.add( textureFlare2, 812, 0.0, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare2, 812, 0.0, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare2, 8120, 0.0, THREE.AdditiveBlending );
+
+            lensFlare.add( textureFlare3, 600, 1.6, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 7000, 1.7, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 1900, 0.9, THREE.AdditiveBlending );
+            lensFlare.add( textureFlare3, 790, 1.0, THREE.AdditiveBlending );
+
+            lensFlare.customUpdateCallback = lensFlareUpdateCallback;
+            lensFlare.position = light.position;
+
+            scene.add( lensFlare );
+
+        }
+
+        function lensFlareUpdateCallback( object ) {
+
+            var f, fl = object.lensFlares.length;
+            var flare;
+            var vecX = -object.positionScreen.x * 2;
+            var vecY = -object.positionScreen.y * 2;
+
+
+            for( f = 0; f < fl; f++ ) {
+
+                flare = object.lensFlares[ f ];
+
+                flare.x = object.positionScreen.x + vecX * flare.distance;
+                flare.y = object.positionScreen.y + vecY * flare.distance;
+
+                flare.rotation = 0;
+
+            }
+
+            object.lensFlares[ 2 ].y += 0.025;
+            object.lensFlares[ 3 ].rotation = object.positionScreen.x * 0.5 + THREE.Math.degToRad( 45 );
+
+        }
+
+        // XXX: wait particle creation
+        setTimeout(animate, 1000);
     }
 
     function animate() {
@@ -564,36 +650,75 @@ UNIVERSE.Core3D = function (container) {
     function render() {
         zoom(curZoomSpeed);
 
-        rotation.x += (target.x - rotation.x) * 0.1;
-        rotation.y += (target.y - rotation.y) * 0.1;
+        // XXX: デモの動きの中では必要ない
+        // rotation.x += (target.x - rotation.x) * 0.1;
+        // rotation.y += (target.y - rotation.y) * 0.1;
         // rotation.z += (target.z - rotation.z) * 0.1;
-        distance += (self.distanceTarget - distance) * 0.3;
+        // distance += (self.distanceTarget - distance) * 0.3;
 
         // XXX: 目的地をピタリと固定する
-        // if (window.universe) {
-        //     universe.core.setDestination(universe.core.destination);
-        // }
+        if (window.universe) {
+            universe.core.setDestination(universe.core.destination);
+        }
+
+        // XXX: 土星の輪
+        if (window.saturnring) {
+            saturnring.position = universe.core.getObjectPosition('saturn');
+        }
 
         if (goStar) {
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.005;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.005;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.005;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * camera.velocity;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * camera.velocity;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * camera.velocity;
             }
 
-            camera.position.x += (scene.position.x - camera.position.x) * 0.005;
-            camera.position.y += (scene.position.y - camera.position.y) * 0.005;
-            camera.position.z += (scene.position.z - camera.position.z) * 0.005;
+            var dist = Math.sqrt(
+                Math.pow(scene.position.x - camera.position.x, 2) +
+                Math.pow(scene.position.y - camera.position.y, 2) +
+                Math.pow(scene.position.z - camera.position.z, 2)
+            );
+            if (!window.arrived && dist < sceneTarget.radius * 1.1) {
+                window.arrived = true;
+                location.href = './arrival.php?star='+self.destination;
+            }
+
+            if (dist > 1000000) {
+                var ratio = 0.01 / Math.pow(dist / 1000000, 2);
+                camera.position.x += (scene.position.x - camera.position.x) * ratio;
+                camera.position.y += (scene.position.y - camera.position.y) * ratio;
+                camera.position.z += (scene.position.z - camera.position.z) * ratio;
+            } else {
+                camera.position.x += (scene.position.x - camera.position.x) * 0.016;
+                camera.position.y += (scene.position.y - camera.position.y) * 0.016;
+                camera.position.z += (scene.position.z - camera.position.z) * 0.016;
+            }
 
         } else {
             if (sceneTarget) {
-                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.05;
-                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.05;
-                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.05;
+                scene.position.x += (sceneTarget.position.x - scene.position.x) * 0.1;
+                scene.position.y += (sceneTarget.position.y - scene.position.y) * 0.1;
+                scene.position.z += (sceneTarget.position.z - scene.position.z) * 0.1;
+                document.body.style.backgroundPositionX = ((sceneTarget.position.x - scene.position.x) * 0.001) + 'px';
 
                 camera.position.x += (scene.position.x + sceneTarget.radius * 3 - camera.position.x) * 0.1;
                 camera.position.y += (scene.position.y + sceneTarget.radius * 3 - camera.position.y) * 0.1;
                 camera.position.z += (scene.position.z + sceneTarget.radius * 3 - camera.position.z) * 0.1;
+
+                var dist = Math.sqrt(
+                    Math.pow(scene.position.x + sceneTarget.radius * 3 - camera.position.x, 2) +
+                    Math.pow(scene.position.y + sceneTarget.radius * 3 - camera.position.y, 2) +
+                    Math.pow(scene.position.z + sceneTarget.radius * 3 - camera.position.z, 2)
+                );
+
+                if (dist < 1000) {
+                    if (!window.picopicon) {
+                        window.picopicon = true;
+                        $(document).triggerHandler('select:done');
+                    }
+                } else {
+                    window.picopicon = false;
+                }
             }
         }
 
@@ -642,6 +767,9 @@ UNIVERSE.Core3D = function (container) {
     function onMouseMove(event) {
         mouse.x = -event.clientX;
         mouse.y = event.clientY;
+        console.log(mouse.x);
+        console.log(mouse.y);
+        // $("body").css("background-position", mouse.x + "px " + mouse.y + "px");
 
         var zoomDamp = distance / (35000);
 

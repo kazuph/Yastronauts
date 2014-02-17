@@ -1,9 +1,11 @@
-#ticket{
+.ticket{
 	width:400px;
 	position: fixed;
+  top: 40%;
 	right:-410px;
+  z-index: 1001;
 }
 
-#ticket img{
+.ticket img{
 	width:100%;
-	}
+}

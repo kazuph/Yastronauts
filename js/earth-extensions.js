@@ -68,6 +68,8 @@ UNIVERSE.Earth = function (universe, earthExtensions, dayImageURL, nightImageURL
         nightMaterial = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             overdraw: true,
+            // wireframe: true,
+            opacity: 0.5,
             map: earthAtNightTexture,
             blending: THREE.AdditiveBlending
         }),
@@ -521,7 +523,12 @@ UNIVERSE.Planet = function (universe, earthExtensions, planetImageURL, options) 
                     y: convertedLocation.y,
                     z: convertedLocation.z
                 };
+
                 this.currentLocation = propagatedValue;
+
+                var rotationAngle = MathTools.toRadians(CoordinateConversionTools.convertTimeToGMST(universe.getCurrentUniverseTime()));
+                dayPlanetMesh.rotation.y = rotationAngle - earthExtensions.rotationOffsetFromXAxis;
+                planetMesh.rotation.y = rotationAngle - earthExtensions.rotationOffsetFromXAxis;
             },
             function () {
                 universe.draw(this.id + "_day", dayPlanetMesh, false);
@@ -2777,7 +2784,9 @@ var CoordinateConversionTools = {
         lambda += 0.21 * Math.sin(MathTools.toRadians(269.9 + 954397.70 * Ttdb));
         lambda += -0.19 * Math.sin(MathTools.toRadians(357.5 + 35999.05 * Ttdb));
         lambda += -0.11 * Math.sin(MathTools.toRadians(186.6 + 966404.05 * Ttdb));  //degrees
-        options.speed && (lambda *= options.speed);
+
+        lambda *= (options.speed || 0.001);
+
         if (Math.abs(lambda) > 360) {
             lambda = (lambda % 360);
         }

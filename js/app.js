@@ -11,63 +11,74 @@ earthExtensions.addPlanet("img/mercury_1024.jpg", {
     name: 'mercury',
     distance: 580,
     radius: 380,
-    speed: 0.3116438356164384
+    speed: 0.00098
 });
 earthExtensions.addPlanet("img/venus_1024.jpg", {
     name: 'venus',
     distance: 1080,
     radius: 950,
-    speed: 0.12063632346442774
+    speed: 0.00103
 });
 
 earthExtensions.addPlanet("img/world3000.jpg", {
     name: 'realearth',
     distance: 1500,
     radius: 1000,
-    speed: 13,
-    speed: 0.0747945205479452
+    speed: 0.001
 });
 
-earthExtensions.addPlanet("img/mars_1024.jpg", {
+earthExtensions.addPlanet("img/firefox.jpg", {
     name: 'mars',
     distance: 2280,
     radius: 530,
-    speed: 0.03978431944039639
+    speed: 0.00099
 });
 
 earthExtensions.addPlanet("img/jupiter_1024.jpg", {
     name: 'jupiter',
     distance: 7800,
     radius: 11200,
-    speed: 0.006285253827558421
+    speed: 0.00108
 });
 
 earthExtensions.addPlanet("img/saturn_1024.jpg", {
     name: 'saturn',
     distance: 14300,
     radius: 9400,
-    speed: 0.0025354074762015326
+    speed: 0.00104
 });
+var saturnring = new THREE.Mesh(
+    new THREE.CylinderGeometry(15000, 15000, 1, 32, false),
+    new THREE.MeshBasicMaterial({
+        color: 0xffffdd,
+        doubleSided: true,
+        wireframe: false,
+        overdraw: true,
+        opacity: .5
+    })
+);
+saturnring.position = universe.core.getObjectPosition('saturn');
+universe.core.scene.add(saturnring);
 
 earthExtensions.addPlanet("img/uranus_1024.jpg", {
     name: 'uranus',
     distance: 28800,
     radius: 4000,
-    speed: 0.0008904109589041096
+    speed: 0.00099
 });
 
 earthExtensions.addPlanet("img/neptune_1024.jpg", {
     name: 'neptune',
     distance: 45000,
     radius: 3900,
-    speed: 0.0004533001245330013
+    speed: 0.00101
 });
 
 earthExtensions.addPlanet("img/pluto_1024.jpg", {
     name: 'pluto',
     distance: 59000,
     radius: 1800,  // x10 size :)
-    speed: 0.0003015908086610694
+    speed: 0.001
 });
 
 earthExtensions.addSun();
@@ -84,7 +95,7 @@ var initialPosition = new UNIVERSE.ECICoordinates(
 var date = new Date();
 var epoch = new Date(date);
 
-universe.addJsonGeometryModel("dsp", "models/DSP.json?", function() {
+universe.addJsonGeometryModel("dsp", "models/DSP.json", function() {
     var spaceObject = new UNIVERSE.SpaceObject(
         "space_object_id",
         "space_object_name",
@@ -111,30 +122,68 @@ universe.addJsonGeometryModel("dsp", "models/DSP.json?", function() {
 
 universe.play(date, 500, undefined);
 
-document.getElementById("universe").getElementsByTagName("canvas")[0].style.position = "";
+var starList = [
+    'earth',
+    'mercury',
+    'venus',
+    'realearth',
+    'mars',
+    'jupiter',
+    'saturn',
+    'uranus',
+    'neptune',
+    'pluto'
+];
 
-universe.core.setDestination('realearth');
+var selectedStarNum = 3; // 初期値は地球
+universe.core.setDestination(starList[selectedStarNum]);
 
-starList = ['earth', 'mercury', 'venus', 'realearth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'];
-selectedStarNum = 3; // 初期値は地球
 
 // 出発
 function go() {
     universe.core.camera.position = universe.core.getObjectPosition('realearth');
     universe.core.toggleGoStar();
+    $('#planet_info').hide();
 }
 
 // 次の星
 function nextStar() {
-    selectedStarNum++;
-    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+    selectedStarNum = (selectedStarNum + 1) % starList.length;
+    universe.core.setDestination(starList[selectedStarNum]);
+    $('#planet_info').hide();
 }
 
 // 前の星
 function prevStar() {
     selectedStarNum--;
     if (selectedStarNum < 0) {
-        selectedStarNum = starList.length -1;
+        selectedStarNum += starList.length;
     }
-    universe.core.setDestination(starList[selectedStarNum%starList.length]);
+    universe.core.setDestination(starList[selectedStarNum]);
+    $('#planet_info').hide();
 }
+
+$(document).on('select:done', function() {
+    new Audio('sound/picopicon.ogg').play();  // 効果音: 魔王魂
+    $('#planet_info').fadeIn('fast').find('.text').text({
+        earth: 'SUN',
+        mercury: 'MERCURY',
+        venus: 'VENUS',
+        realearth: 'EARTH',
+        mars: 'MARS',
+        jupiter: 'JUPITER',
+        saturn: 'SATURN',
+        uranus: 'URANUS',
+        neptune: 'NEPTUNE',
+        pluto: 'PLUTO'
+    }[starList[selectedStarNum]]);
+});
+
+function speedUp() { universe.core.camera.velocity = 0.05; }
+function speedDown() { universe.core.camera.velocity = 0.005; }
+
+$(function() {
+    $('<a/>').addClass('btn-prev').text('< 前の星').on('click', prevStar).appendTo(document.body);
+    $('<a/>').addClass('btn-next').text('次の星 >').on('click', nextStar).appendTo(document.body);
+    $('<a/>').addClass('btn-go').text('出発!!').on('click', go).appendTo(document.body);
+});
